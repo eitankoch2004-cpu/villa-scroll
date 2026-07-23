@@ -2,335 +2,278 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meridian — an island house</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E11">
+<title>Meridian — walk the house</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0B0E11;
-  --slate:#161D24;
-  --mist:#D4DCE2;
-  --muted:#67788A;
-  --amber:#C08A3E;
-  --rail:#2A343E;
-  --display:'Archivo',system-ui,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ink:#0B0E11; --slate:#161D24; --mist:#D4DCE2; --muted:#67788A;
+  --amber:#C08A3E; --rail:#2A343E;
+  --display:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --stage-h:100svh;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:auto}
-body{
-  background:var(--ink);
-  color:var(--mist);
-  font-family:var(--display);
-  font-variation-settings:'wdth' 100,'wght' 400;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
+body{background:var(--ink);color:var(--mist);font-family:var(--display);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%}
+button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 
-/* ---------- top bar ---------- */
-.bar{
-  position:fixed;top:0;left:0;right:0;z-index:40;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:22px clamp(18px,4vw,48px);
-  mix-blend-mode:difference;
-}
-.mark{
-  font-family:var(--mono);font-size:12px;letter-spacing:.34em;
-  text-transform:uppercase;color:#fff;
-}
-.nav{display:flex;gap:clamp(16px,3vw,34px)}
-.nav a{
-  font-family:var(--mono);font-size:11px;letter-spacing:.24em;
-  text-transform:uppercase;color:#fff;text-decoration:none;opacity:.72;
-  transition:opacity .25s;
-}
-.nav a:hover,.nav a:focus-visible{opacity:1}
-a:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+.bar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(16px + env(safe-area-inset-top)) clamp(16px,4vw,44px) 16px;mix-blend-mode:difference}
+.mark{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#fff}
+.bar a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:#fff;text-decoration:none;opacity:.75;padding:8px 0}
 
-/* ---------- the scroll stage ---------- */
-.track{position:relative;height:600vh}
-.stage{
-  position:sticky;top:0;height:100svh;width:100%;
-  overflow:hidden;background:var(--ink);
-}
+.track{position:relative}
+.stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink);
+  display:flex;flex-direction:column}
+.frameBox{position:relative;height:var(--stage-h);width:100%;overflow:hidden;flex:0 0 auto}
 #frame{display:block;width:100%;height:100%}
-.vignette{
-  position:absolute;inset:0;pointer-events:none;
-  box-shadow:inset 0 0 200px 60px rgba(6,9,12,.85);
-}
+.scrim{position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 -150px 130px -70px rgba(6,9,12,.85), inset 0 110px 110px -80px rgba(6,9,12,.75)}
 
-/* ---------- chapters ---------- */
-.chapter{
-  position:absolute;inset:0;z-index:20;pointer-events:none;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:0 clamp(20px,7vw,110px);
-  opacity:0;transform:translateY(18px);
-  transition:opacity .5s ease,transform .5s ease;
-}
-.chapter.on{opacity:1;transform:none}
-.eyebrow{
-  font-family:var(--mono);font-size:11px;letter-spacing:.36em;
-  text-transform:uppercase;color:var(--amber);margin-bottom:18px;
-}
-.chapter h1,.chapter h2{
-  font-family:var(--display);
-  font-variation-settings:'wdth' 68,'wght' 800;
-  font-size:clamp(52px,14vw,182px);
-  line-height:.86;letter-spacing:-.01em;text-transform:uppercase;
-  color:#EEF3F6;
-  text-shadow:0 6px 60px rgba(0,0,0,.55);
-}
-.chapter p{
-  max-width:38ch;margin-top:22px;
-  font-size:clamp(14px,1.5vw,17px);line-height:1.65;color:var(--mist);
-  opacity:.82;
-}
-.chapter.right{align-items:flex-end;text-align:right}
-.chapter.right p{text-align:right}
+.label{position:absolute;left:clamp(18px,4vw,54px);bottom:clamp(84px,13vh,126px);z-index:20;
+  max-width:min(70vw,620px);opacity:0;transform:translateY(14px);
+  transition:opacity .55s ease,transform .55s ease}
+.label.on{opacity:1;transform:none}
+.label .eye{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:10px}
+.label h1{font-variation-settings:'wdth' 68,'wght' 800;font-size:clamp(40px,10vw,132px);line-height:.86;
+  text-transform:uppercase;text-shadow:0 4px 44px rgba(0,0,0,.6)}
+.label p{margin-top:12px;max-width:32ch;font-size:14px;line-height:1.6;opacity:.84;
+  text-shadow:0 2px 18px rgba(0,0,0,.85)}
 
-/* ---------- signature: frame rail ---------- */
-.rail{
-  position:fixed;z-index:30;right:clamp(14px,2.6vw,34px);
-  top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;align-items:flex-end;gap:14px;
-}
-.rail-line{width:1px;height:38vh;background:var(--rail);position:relative}
-.rail-fill{position:absolute;top:0;left:0;width:1px;height:0;background:var(--amber)}
-.counter{
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-  color:var(--muted);white-space:nowrap;
-}
-.counter b{color:var(--mist);font-weight:500}
+.rail{position:fixed;right:clamp(12px,2.4vw,34px);top:50%;transform:translateY(-50%);z-index:35;
+  display:flex;flex-direction:column;align-items:flex-end;gap:11px}
+.rail .num{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.rail .num b{color:var(--mist);font-weight:500}
+.segs{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.segs i{display:block;width:20px;height:2px;background:var(--rail);transition:.3s}
+.segs i.done{background:var(--muted)}
+.segs i.now{background:var(--amber);width:36px}
 
-.hint{
-  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:30;
-  font-family:var(--mono);font-size:10px;letter-spacing:.34em;
-  text-transform:uppercase;color:var(--muted);
-  transition:opacity .4s;
-}
+.hint{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  z-index:35;font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);transition:opacity .4s}
 
-/* ---------- loader ---------- */
-.loader{
-  position:fixed;inset:0;z-index:60;background:var(--ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  transition:opacity .6s ease;
-}
+.loader{position:fixed;inset:0;z-index:60;background:var(--ink);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;transition:opacity .6s}
 .loader.gone{opacity:0;pointer-events:none}
-.loader .pct{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--muted)}
-.loader .bar-t{width:min(260px,54vw);height:1px;background:var(--rail)}
-.loader .bar-f{height:1px;width:0;background:var(--amber);transition:width .2s}
+.loader .pct{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--muted)}
+.loader .t{width:min(220px,50vw);height:1px;background:var(--rail)}
+.loader .f{height:1px;width:0;background:var(--amber);transition:width .2s}
 
-/* ---------- closing ---------- */
-.outro{
-  min-height:80svh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:26px;
-  padding:80px 24px;text-align:center;background:var(--ink);
-}
-.outro h2{
-  font-variation-settings:'wdth' 72,'wght' 700;
-  font-size:clamp(30px,6vw,64px);line-height:1;text-transform:uppercase;
-}
-.outro p{color:var(--muted);max-width:46ch;line-height:1.7;font-size:15px}
-.btn{
-  font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;
-  color:var(--ink);background:var(--mist);text-decoration:none;
-  padding:15px 30px;border-radius:2px;transition:background .25s;
-}
-.btn:hover,.btn:focus-visible{background:var(--amber)}
+.outro{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;padding:70px 22px calc(70px + env(safe-area-inset-bottom));text-align:center;background:var(--ink)}
+.outro h2{font-variation-settings:'wdth' 72,'wght' 700;font-size:clamp(28px,6vw,60px);
+  line-height:1;text-transform:uppercase}
+.outro p{color:var(--muted);max-width:42ch;line-height:1.7;font-size:14px}
+.btn{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);
+  background:var(--mist);text-decoration:none;padding:16px 30px;border-radius:2px;transition:.2s;
+  min-height:48px;display:inline-flex;align-items:center}
+.btn:hover{background:var(--amber)}
 
-@media (max-width:640px){
-  .rail-line{height:26vh}
-  .nav{gap:14px}
+/* ---------- phones: the frame becomes a band, text sits below it ---------- */
+@media (max-width:760px){
+  :root{--stage-h:58svh}
+  .stage{justify-content:flex-start}
+  .label{position:static;margin:24px clamp(18px,5vw,28px) 0;opacity:1;transform:none;max-width:none}
+  .label h1{font-size:clamp(38px,13vw,60px)}
+  .label p{font-size:13px;max-width:36ch}
+  .label.on{opacity:1}
+  .scrim{box-shadow:inset 0 -70px 70px -50px rgba(6,9,12,.8)}
+  .rail{top:auto;bottom:calc(18px + env(safe-area-inset-bottom));right:16px;transform:none;
+    flex-direction:row;align-items:center;gap:10px}
+  .segs{flex-direction:row;gap:5px}
+  .segs i{width:14px}
+  .segs i.now{width:26px}
+  .hint{left:18px;transform:none}
 }
-@media (prefers-reduced-motion:reduce){
-  .chapter{transition:none}
-}
+@media (prefers-reduced-motion:reduce){.label{transition:none}}
 </style>
 </head>
 <body>
 
 <div class="loader" id="loader">
   <div class="pct" id="pct">000%</div>
-  <div class="bar-t"><div class="bar-f" id="barf"></div></div>
+  <div class="t"><div class="f" id="lf"></div></div>
 </div>
 
 <header class="bar">
   <div class="mark">Meridian</div>
-  <nav class="nav">
-    <a href="#outro">House</a>
-    <a href="#outro">Tour</a>
-    <a href="#outro">Contact</a>
-  </nav>
+  <a href="showroom.html">Lamps →</a>
 </header>
 
-<div class="rail" aria-hidden="true">
-  <div class="counter"><b id="cnum">0001</b> / <span id="ctot">0180</span></div>
-  <div class="rail-line"><div class="rail-fill" id="railf"></div></div>
+<div class="rail">
+  <div class="num"><b id="cur">0001</b> / <span id="tot">0000</span></div>
+  <div class="segs" id="segs"></div>
 </div>
 
 <div class="hint" id="hint">Scroll</div>
 
 <section class="track" id="track">
   <div class="stage">
-    <canvas id="frame"></canvas>
-    <div class="vignette"></div>
-
-    <div class="chapter" data-from="0.00" data-to="0.20">
-      <div class="eyebrow">Chapter 01 — Origin</div>
-      <h1>The<br>island</h1>
-      <p>A single volume set on basalt, forty metres above open water. Nothing else was built here.</p>
+    <div class="frameBox">
+      <canvas id="frame"></canvas>
+      <div class="scrim"></div>
     </div>
-
-    <div class="chapter right" data-from="0.26" data-to="0.48">
-      <div class="eyebrow">Chapter 02 — Approach</div>
-      <h2>Ascent</h2>
-      <p>The house is entered from the side. Stone steps climb the flank, so the sea stays behind you until the last turn.</p>
-    </div>
-
-    <div class="chapter" data-from="0.54" data-to="0.76">
-      <div class="eyebrow">Chapter 03 — Threshold</div>
-      <h2>Concrete<br>and glass</h2>
-      <p>Board-formed concrete carries the load. Glass does the rest, and disappears at dusk.</p>
-    </div>
-
-    <div class="chapter right" data-from="0.82" data-to="1.00">
-      <div class="eyebrow">Chapter 04 — Arrival</div>
-      <h2>Inside</h2>
-      <p>Step through, and the horizon becomes the far wall.</p>
-    </div>
+    <div class="label" id="label"></div>
   </div>
 </section>
 
-<section class="outro" id="outro">
-  <h2>Walk through it</h2>
-  <p>The full house is documented as a 360° tour — seven rooms, from the lobby to the pool deck at night.</p>
-  <a class="btn" href="#">Open the tour</a>
+<section class="outro">
+  <h2>Choose the light</h2>
+  <p>Every room takes a different lamp. See how each one sits in the space before you decide.</p>
+  <a class="btn" href="showroom.html">Enter the showroom</a>
 </section>
 
 <script>
-/* =======================================================
-   EDIT THIS BLOCK ONLY
-   COUNT  = how many frames you have
-   DIR    = folder name
-   EXT    = jpg or png
-   PAD    = digits in the filename (0001.jpg = 4)
-   ======================================================= */
-const CFG = { COUNT: 121, DIR: 'frames', EXT: 'jpg', PAD: 4 };
-/* ===================================================== */
+/* ==============================================================
+   EDIT ONLY THIS BLOCK
 
-const cv = document.getElementById('frame');
-const ctx = cv.getContext('2d', { alpha: false });
-const track = document.getElementById('track');
-const chapters = [...document.querySelectorAll('.chapter')];
-const cnum = document.getElementById('cnum');
-const ctot = document.getElementById('ctot');
-const railf = document.getElementById('railf');
-const hint = document.getElementById('hint');
-const loader = document.getElementById('loader');
-const pct = document.getElementById('pct');
-const barf = document.getElementById('barf');
+   Each room = one clip = one pair of folders:
+     dir    -> desktop frames   (1920 px)
+     dirM   -> mobile frames    (900 px)
+   count : how many frames are in that folder.
+           0 = not made yet, the room is skipped entirely.
+   ============================================================== */
+const SEGMENTS = [
+  { dir:'frames',         dirM:'frames-m',         count:121, label:'The approach', note:'Stone steps climb the flank. The sea stays behind you until the last turn.' },
+  { dir:'frames-lobby',   dirM:'frames-lobby-m',   count:0,   label:'Lobby',        note:'Double height, board-formed concrete, a single skylight slot.' },
+  { dir:'frames-living',  dirM:'frames-living-m',  count:0,   label:'Living room',  note:'The glass wall makes the horizon the far wall.' },
+  { dir:'frames-kitchen', dirM:'frames-kitchen-m', count:0,   label:'Kitchen',      note:'A monolithic travertine island under three amber pendants.' },
+  { dir:'frames-bedroom', dirM:'frames-bedroom-m', count:0,   label:'Bedroom',      note:'The bed faces open water. Nothing else does.' }
+];
 
-const pad = n => String(n).padStart(CFG.PAD, '0');
-const src = i => CFG.DIR + '/' + pad(i) + '.' + CFG.EXT;
-ctot.textContent = pad(CFG.COUNT);
+const PX_PER_FRAME = 9;   // scroll distance per frame. higher = slower walk
+/* ============================================================== */
 
-const images = [];
-let ready = 0, missing = false, target = 0, current = 0, raf = null;
+const MOBILE = matchMedia('(max-width:760px)').matches;
+const SEGS  = SEGMENTS.filter(s => s.count > 0);
+const TOTAL = SEGS.reduce((a,s) => a + s.count, 0);
 
-function sizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  cv.width = Math.round(innerWidth * dpr);
-  cv.height = Math.round(innerHeight * dpr);
+const cv=document.getElementById('frame'), ctx=cv.getContext('2d',{alpha:false});
+const track=document.getElementById('track'), labelEl=document.getElementById('label');
+const curEl=document.getElementById('cur'), totEl=document.getElementById('tot');
+const segsEl=document.getElementById('segs'), hint=document.getElementById('hint');
+const loader=document.getElementById('loader'), pct=document.getElementById('pct'), lf=document.getElementById('lf');
+
+const pad4=n=>String(n).padStart(4,'0');
+const folder=s=>(MOBILE && s.dirM) ? s.dirM : s.dir;
+
+totEl.textContent=pad4(TOTAL);
+track.style.height=Math.max(TOTAL*PX_PER_FRAME, innerHeight*3)+'px';
+
+let acc=0;
+SEGS.forEach(s=>{ s.start=acc; acc+=s.count; s.imgs=[]; s.loaded=false; });
+SEGS.forEach(()=>{ const i=document.createElement('i'); segsEl.appendChild(i); });
+
+let target=0, current=0, raf=null, seg=-1, firstDone=false;
+
+function sizeCanvas(){
+  const box=cv.parentElement.getBoundingClientRect();
+  const dpr=Math.min(devicePixelRatio||1, MOBILE?2:2);
+  cv.width=Math.round(box.width*dpr);
+  cv.height=Math.round(box.height*dpr);
   render(current);
 }
 
-function cover(img) {
-  const cw = cv.width, ch = cv.height;
-  const s = Math.max(cw / img.width, ch / img.height);
-  const w = img.width * s, h = img.height * s;
-  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
-}
-
-function placeholder(i) {
-  const cw = cv.width, ch = cv.height, d = Math.min(cv.width, cv.height) / 1000;
-  ctx.fillStyle = '#0B0E11'; ctx.fillRect(0, 0, cw, ch);
-  ctx.fillStyle = '#67788A';
-  ctx.textAlign = 'center';
-  ctx.font = (13 * d * 2.4) + 'px ui-monospace, monospace';
-  ctx.fillText('no frames found in /' + CFG.DIR, cw / 2, ch / 2 - 22 * d * 2.4);
-  ctx.fillText('expecting ' + src(1) + ' … ' + src(CFG.COUNT), cw / 2, ch / 2 + 10 * d * 2.4);
-  ctx.fillStyle = '#C08A3E';
-  ctx.fillText('frame ' + pad(i), cw / 2, ch / 2 + 46 * d * 2.4);
-}
-
-function render(i) {
-  const idx = Math.max(1, Math.min(CFG.COUNT, Math.round(i)));
-  const img = images[idx - 1];
-  if (missing || !img || !img.complete || !img.naturalWidth) { placeholder(idx); }
-  else { cover(img); }
-  cnum.textContent = pad(idx);
-}
-
-function progress() {
-  const r = track.getBoundingClientRect();
-  const total = r.height - innerHeight;
-  return total <= 0 ? 0 : Math.max(0, Math.min(1, -r.top / total));
-}
-
-function tick() {
-  current += (target - current) * 0.14;
-  if (Math.abs(target - current) < 0.02) current = target;
-  render(current);
-  raf = Math.abs(target - current) > 0.001 ? requestAnimationFrame(tick) : null;
-}
-
-function onScroll() {
-  const p = progress();
-  target = 1 + p * (CFG.COUNT - 1);
-  railf.style.height = (p * 100) + '%';
-  hint.style.opacity = p > 0.02 ? '0' : '1';
-  chapters.forEach(c => {
-    const on = p >= +c.dataset.from && p <= +c.dataset.to;
-    c.classList.toggle('on', on);
-  });
-  if (!raf) raf = requestAnimationFrame(tick);
-}
-
-function preload() {
-  let done = 0;
-  const step = () => {
-    done++;
-    const p = Math.round(done / CFG.COUNT * 100);
-    pct.textContent = String(p).padStart(3, '0') + '%';
-    barf.style.width = p + '%';
-    if (done >= Math.min(12, CFG.COUNT)) finish();
-  };
-  for (let i = 1; i <= CFG.COUNT; i++) {
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => { ready++; step(); };
-    img.onerror = () => { if (i === 1) missing = true; step(); };
-    img.src = src(i);
-    images.push(img);
+function loadSegment(s, isFirst){
+  if(s.loaded) return; s.loaded=true;
+  const dir=folder(s);
+  let done=0;
+  for(let i=1;i<=s.count;i++){
+    const im=new Image(); im.decoding='async';
+    const fin=()=>{ done++;
+      if(isFirst){
+        const p=Math.round(done/s.count*100);
+        pct.textContent=String(p).padStart(3,'0')+'%'; lf.style.width=p+'%';
+        if(done>=Math.min(10,s.count)) finish();
+      }
+    };
+    im.onload=fin; im.onerror=fin;
+    im.src=dir+'/'+pad4(i)+'.jpg';
+    s.imgs.push(im);
   }
 }
 
-let finished = false;
-function finish() {
-  if (finished) return;
-  finished = true;
-  loader.classList.add('gone');
-  sizeCanvas();
-  onScroll();
+function locate(g){
+  for(let i=0;i<SEGS.length;i++){
+    const s=SEGS[i];
+    if(g < s.start + s.count) return {i, s, local: Math.max(0, Math.round(g - s.start))};
+  }
+  const s=SEGS[SEGS.length-1];
+  return {i:SEGS.length-1, s, local:s.count-1};
 }
 
-addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', sizeCanvas);
+function cover(img){
+  const cw=cv.width, ch=cv.height;
+  const k=Math.max(cw/img.width, ch/img.height);
+  const w=img.width*k, h=img.height*k;
+  ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
+}
+
+function placeholder(txt){
+  ctx.fillStyle='#0B0E11'; ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.fillStyle='#67788A'; ctx.textAlign='center';
+  const d=Math.min(cv.width,cv.height)/1000*2.4;
+  ctx.font=(13*d)+'px ui-monospace, monospace';
+  ctx.fillText(txt, cv.width/2, cv.height/2);
+}
+
+function render(g){
+  if(!TOTAL){ placeholder('no frames yet — set count in SEGMENTS'); return; }
+  const {i,s,local}=locate(g);
+  const img=s.imgs[local];
+  if(img && img.complete && img.naturalWidth) cover(img);
+  else placeholder(folder(s)+'/'+pad4(local+1)+'.jpg');
+
+  curEl.textContent=pad4(Math.min(TOTAL,Math.round(g)+1));
+
+  if(i!==seg){
+    seg=i;
+    labelEl.classList.remove('on');
+    labelEl.innerHTML='<div class="eye">'+String(i+1).padStart(2,'0')+' — '+s.label+'</div>'+
+                      '<h1>'+s.label+'</h1><p>'+s.note+'</p>';
+    requestAnimationFrame(()=>labelEl.classList.add('on'));
+    segsEl.querySelectorAll('i').forEach((el,k)=>{
+      el.className = k<i ? 'done' : (k===i ? 'now' : '');
+    });
+    const nx=SEGS[i+1]; if(nx) loadSegment(nx);
+  }
+}
+
+function tick(){
+  current+=(target-current)*0.13;
+  if(Math.abs(target-current)<0.02) current=target;
+  render(current);
+  raf = Math.abs(target-current)>0.001 ? requestAnimationFrame(tick) : null;
+}
+
+function onScroll(){
+  const r=track.getBoundingClientRect();
+  const span=r.height-innerHeight;
+  const p=span<=0?0:Math.max(0,Math.min(1,-r.top/span));
+  target=p*(TOTAL-1);
+  hint.style.opacity=p>0.02?'0':'1';
+  if(!raf) raf=requestAnimationFrame(tick);
+}
+
+function finish(){
+  if(firstDone) return; firstDone=true;
+  loader.classList.add('gone'); sizeCanvas(); onScroll();
+}
+
+addEventListener('scroll',onScroll,{passive:true});
+let rt=null;
+addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(sizeCanvas,120); });
+addEventListener('orientationchange',()=>setTimeout(sizeCanvas,300));
 sizeCanvas();
-preload();
-setTimeout(finish, 6000);
+if(SEGS.length){ loadSegment(SEGS[0], true); if(SEGS[1]) loadSegment(SEGS[1]); }
+else finish();
+setTimeout(finish,7000);
 </script>
 </body>
 </html>
