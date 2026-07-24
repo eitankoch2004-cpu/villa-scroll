@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B0E11">
-<title>Meridian — walk the house</title>
+<title>Meridian — an island house, and the light in it</title>
+<meta name="description" content="A modern house on a rock above open water, and the lamps drawn for it.">
+<link rel="preload" as="image" href="frames-m/0001.webp" media="(max-width:760px)">
+<link rel="preload" as="image" href="frames/0001.webp" media="(min-width:761px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,15 +16,18 @@
   --ink:#0B0E11; --slate:#161D24; --mist:#D4DCE2; --muted:#67788A;
   --amber:#C08A3E; --rail:#2A343E;
   --display:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
-  --stage-h:100svh;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--ink);color:var(--mist);font-family:var(--display);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%}
 button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+img{display:block;max-width:100%}
 
-.bar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;
-  padding:calc(16px + env(safe-area-inset-top)) clamp(16px,4vw,44px) 16px;mix-blend-mode:difference}
+/* menu retreats on scroll — keeps the product uncontested */
+.bar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+  align-items:center;padding:calc(15px + env(safe-area-inset-top)) clamp(16px,4vw,44px) 15px;
+  mix-blend-mode:difference;transition:transform .35s ease,opacity .35s ease}
+.bar.away{transform:translateY(-110%);opacity:0}
 .mark{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#fff}
 .bar a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
   color:#fff;text-decoration:none;opacity:.75;padding:8px 0}
@@ -29,7 +35,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offs
 .track{position:relative}
 .stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink);
   display:flex;flex-direction:column}
-.frameBox{position:relative;height:var(--stage-h);width:100%;overflow:hidden;flex:0 0 auto}
+.frameBox{position:relative;height:100svh;width:100%;overflow:hidden;flex:0 0 auto}
 #frame{display:block;width:100%;height:100%}
 .scrim{position:absolute;inset:0;pointer-events:none;
   box-shadow:inset 0 -150px 130px -70px rgba(6,9,12,.85), inset 0 110px 110px -80px rgba(6,9,12,.75)}
@@ -46,7 +52,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offs
   text-shadow:0 2px 18px rgba(0,0,0,.85)}
 
 .rail{position:fixed;right:clamp(12px,2.4vw,34px);top:50%;transform:translateY(-50%);z-index:35;
-  display:flex;flex-direction:column;align-items:flex-end;gap:11px}
+  display:flex;flex-direction:column;align-items:flex-end;gap:11px;transition:opacity .4s}
+.rail.hide{opacity:0;pointer-events:none}
 .rail .num{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
 .rail .num b{color:var(--mist);font-weight:500}
 .segs{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
@@ -58,55 +65,99 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offs
   z-index:35;font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;
   color:var(--muted);transition:opacity .4s}
 
-.loader{position:fixed;inset:0;z-index:60;background:var(--ink);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;transition:opacity .6s}
-.loader.gone{opacity:0;pointer-events:none}
-.loader .pct{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--muted)}
-.loader .t{width:min(220px,50vw);height:1px;background:var(--rail)}
-.loader .f{height:1px;width:0;background:var(--amber);transition:width .2s}
+/* thin top-edge progress instead of a blocking splash */
+.wire{position:fixed;top:0;left:0;height:2px;width:0;background:var(--amber);z-index:70;
+  transition:width .25s ease,opacity .5s ease}
+.wire.gone{opacity:0}
 
-.outro{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:22px;padding:70px 22px calc(70px + env(safe-area-inset-bottom));text-align:center;background:var(--ink)}
+.sect{padding:clamp(72px,13vh,140px) clamp(20px,5vw,64px)}
+.sect-head{max-width:760px;margin:0 auto clamp(40px,7vh,72px);text-align:center}
+.sect-head .eye{font-family:var(--mono);font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:16px}
+.sect-head h2{font-variation-settings:'wdth' 70,'wght' 800;font-size:clamp(34px,7vw,88px);line-height:.9;
+  text-transform:uppercase;margin-bottom:20px}
+.sect-head p{color:var(--muted);font-size:15px;line-height:1.75;max-width:46ch;margin:0 auto}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:clamp(18px,3vw,34px);max-width:1180px;margin:0 auto}
+.card{background:var(--slate);border:1px solid var(--rail);border-radius:3px;overflow:hidden;
+  display:flex;flex-direction:column;transition:border-color .3s}
+.card:hover{border-color:var(--muted)}
+.shot{position:relative;aspect-ratio:4/5;background:#11171D;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding:16px}
+.body{padding:20px 20px 24px;display:flex;flex-direction:column;gap:8px;flex:1}
+.body .rm{font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber)}
+.body h3{font-variation-settings:'wdth' 84,'wght' 700;font-size:23px;text-transform:uppercase;line-height:1}
+.body .note{color:var(--muted);font-size:13px;line-height:1.6;flex:1}
+.body .price{font-family:var(--mono);font-size:16px;color:var(--mist);margin-top:6px}
+.body .buy{margin-top:12px;text-align:center;background:var(--mist);color:var(--ink);text-decoration:none;
+  font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  padding:14px;border-radius:2px;transition:background .2s;min-height:48px;
+  display:flex;align-items:center;justify-content:center}
+.body .buy:hover{background:var(--amber)}
+
+.strip{border-top:1px solid var(--rail);border-bottom:1px solid var(--rail);
+  padding:clamp(48px,8vh,88px) clamp(20px,5vw,64px);text-align:center}
+.strip p{font-variation-settings:'wdth' 78,'wght' 500;font-size:clamp(19px,3.2vw,32px);
+  line-height:1.35;max-width:24ch;margin:0 auto;color:var(--mist)}
+.strip span{color:var(--amber)}
+
+.outro{padding:clamp(72px,13vh,140px) 22px clamp(72px,13vh,140px);
+  text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px}
 .outro h2{font-variation-settings:'wdth' 72,'wght' 700;font-size:clamp(28px,6vw,60px);
   line-height:1;text-transform:uppercase}
 .outro p{color:var(--muted);max-width:42ch;line-height:1.7;font-size:14px}
 .btn{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);
-  background:var(--mist);text-decoration:none;padding:16px 30px;border-radius:2px;transition:.2s;
+  background:var(--mist);text-decoration:none;padding:16px 32px;border-radius:2px;transition:background .2s;
   min-height:48px;display:inline-flex;align-items:center}
 .btn:hover{background:var(--amber)}
 
-/* ---------- phones: the frame becomes a band, text sits below it ---------- */
+.foot{padding:34px 22px calc(34px + env(safe-area-inset-bottom));text-align:center;
+  border-top:1px solid var(--rail);font-family:var(--mono);font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+/* one persistent CTA, thumb height, phones only */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:38;display:none;
+  padding:10px clamp(14px,4vw,20px) calc(10px + env(safe-area-inset-bottom));
+  background:rgba(11,14,17,.9);backdrop-filter:blur(14px);border-top:1px solid var(--rail);
+  transform:translateY(120%);transition:transform .4s ease}
+.dock.up{transform:none}
+.dock a{display:flex;align-items:center;justify-content:center;min-height:50px;
+  background:var(--mist);color:var(--ink);text-decoration:none;border-radius:2px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+
 @media (max-width:760px){
-  :root{--stage-h:58svh}
+  .frameBox{height:auto;aspect-ratio:4/5}
   .stage{justify-content:flex-start}
-  .label{position:static;margin:24px clamp(18px,5vw,28px) 0;opacity:1;transform:none;max-width:none}
+  .label{position:static;margin:26px clamp(18px,5vw,28px) 0;opacity:1;transform:none;max-width:none}
   .label h1{font-size:clamp(38px,13vw,60px)}
   .label p{font-size:13px;max-width:36ch}
-  .label.on{opacity:1}
   .scrim{box-shadow:inset 0 -70px 70px -50px rgba(6,9,12,.8)}
-  .rail{top:auto;bottom:calc(18px + env(safe-area-inset-bottom));right:16px;transform:none;
+  .rail{top:auto;bottom:calc(74px + env(safe-area-inset-bottom));right:16px;transform:none;
     flex-direction:row;align-items:center;gap:10px}
   .segs{flex-direction:row;gap:5px}
   .segs i{width:14px}
   .segs i.now{width:26px}
-  .hint{left:18px;transform:none}
+  .hint{left:18px;transform:none;bottom:calc(74px + env(safe-area-inset-bottom))}
+  .grid{grid-template-columns:1fr}
+  .dock{display:block}
+  .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 }
-@media (prefers-reduced-motion:reduce){.label{transition:none}}
+@media (prefers-reduced-motion:reduce){.label{transition:none}.bar{transition:none}}
 </style>
 </head>
 <body>
 
-<div class="loader" id="loader">
-  <div class="pct" id="pct">000%</div>
-  <div class="t"><div class="f" id="lf"></div></div>
-</div>
+<div class="wire" id="wire"></div>
 
-<header class="bar">
+<header class="bar" id="bar">
   <div class="mark">Meridian</div>
-  <a href="showroom.html">Lamps →</a>
+  <a href="#lamps">The lamps →</a>
 </header>
 
-<div class="rail">
+<div class="rail" id="rail">
   <div class="num"><b id="cur">0001</b> / <span id="tot">0000</span></div>
   <div class="segs" id="segs"></div>
 </div>
@@ -123,89 +174,155 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offs
   </div>
 </section>
 
+<section class="strip">
+  <p>The house was built for the light. <span>Then we made the light.</span></p>
+</section>
+
+<section class="sect" id="lamps">
+  <div class="sect-head">
+    <div class="eye">The collection</div>
+    <h2>Light,<br>room by room</h2>
+    <p>Three pieces, each drawn for one part of the house. Same materials, same restraint — stone, smoked glass, blackened brass.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
 <section class="outro">
-  <h2>Choose the light</h2>
-  <p>Every room takes a different lamp. See how each one sits in the space before you decide.</p>
+  <h2>See them in place</h2>
+  <p>Walk the rooms and switch the light. Every lamp, in every space, before you decide.</p>
   <a class="btn" href="showroom.html">Enter the showroom</a>
 </section>
+
+<footer class="foot">Meridian — an island house</footer>
+
+<nav class="dock" id="dock"><a href="showroom.html">See the lamps in the rooms</a></nav>
 
 <script>
 /* ==============================================================
    EDIT ONLY THIS BLOCK
 
-   Each room = one clip = one pair of folders:
-     dir    -> desktop frames   (1920 px)
-     dirM   -> mobile frames    (900 px)
-   count : how many frames are in that folder.
-           0 = not made yet, the room is skipped entirely.
+   One entry per room. Frames are .webp, four digits, in their
+   own folder:   frames-lobby/0001.webp
+   dir   = desktop frames (1920 wide, 16:9)
+   dirM  = phone frames   (880 wide, 4:5 crop)
+   count = how many frames. 0 = not made yet, room is skipped.
    ============================================================== */
 const SEGMENTS = [
-  { dir:'frames',         dirM:'frames-m',         count:121, label:'The approach', note:'Stone steps climb the flank. The sea stays behind you until the last turn.' },
-  { dir:'frames-lobby',   dirM:'frames-lobby-m',   count:0,   label:'Lobby',        note:'Double height, board-formed concrete, a single skylight slot.' },
-  { dir:'frames-living',  dirM:'frames-living-m',  count:0,   label:'Living room',  note:'The glass wall makes the horizon the far wall.' },
-  { dir:'frames-kitchen', dirM:'frames-kitchen-m', count:0,   label:'Kitchen',      note:'A monolithic travertine island under three amber pendants.' },
-  { dir:'frames-bedroom', dirM:'frames-bedroom-m', count:0,   label:'Bedroom',      note:'The bed faces open water. Nothing else does.' }
+  { dir:'frames', dirM:'frames-m', count:121, label:'The approach', note:'Stone steps climb the flank. The sea stays behind you until the last turn.' },
+  { dir:'frames-lobby',   dirM:'frames-lobby-m',   count:0, label:'Lobby',       note:'Double height, board-formed concrete, a single skylight slot.' },
+  { dir:'frames-living',  dirM:'frames-living-m',  count:0, label:'Living room', note:'The glass wall makes the horizon the far wall.' },
+  { dir:'frames-kitchen', dirM:'frames-kitchen-m', count:0, label:'Kitchen',     note:'A monolithic travertine island under three amber pendants.' },
+  { dir:'frames-bedroom', dirM:'frames-bedroom-m', count:0, label:'Bedroom',     note:'The bed faces open water. Nothing else does.' }
+];
+
+const LAMPS = [
+  { id:'aurora', room:'Living room', name:'Aurora', price:'₪489',
+    note:'Hand-blown smoked glass on a blackened brass stem. Warm, low, and quiet above a table.' },
+  { id:'basalt', room:'Lobby',       name:'Basalt', price:'₪620',
+    note:'A turned stone body with a dimmable core. Heavy in the hand, soft on the wall.' },
+  { id:'linea',  room:'Bedroom',     name:'Linea',  price:'₪350',
+    note:'A slim linear profile in matte black aluminium. Reads as a line of light, not a fixture.' }
 ];
 
 const PX_PER_FRAME = 9;   // scroll distance per frame. higher = slower walk
+const EXT = 'webp';
 /* ============================================================== */
 
+document.getElementById('grid').innerHTML = LAMPS.map(l =>
+  '<article class="card"><div class="shot">' +
+    '<div class="ph">img/lamp-' + l.id + '.jpg</div>' +
+    '<img src="img/lamp-' + l.id + '.jpg" alt="' + l.name + '" loading="lazy" onerror="this.remove()">' +
+  '</div><div class="body">' +
+    '<div class="rm">' + l.room + '</div><h3>' + l.name + '</h3>' +
+    '<p class="note">' + l.note + '</p><div class="price">' + l.price + '</div>' +
+    '<a class="buy" href="showroom.html">See it in the room</a>' +
+  '</div></article>').join('');
+
 const MOBILE = matchMedia('(max-width:760px)').matches;
-const SEGS  = SEGMENTS.filter(s => s.count > 0);
-const TOTAL = SEGS.reduce((a,s) => a + s.count, 0);
+const STILL  = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const SEGS   = SEGMENTS.filter(s => s.count > 0);
+const TOTAL  = SEGS.reduce((a,s) => a + s.count, 0);
 
 const cv=document.getElementById('frame'), ctx=cv.getContext('2d',{alpha:false});
 const track=document.getElementById('track'), labelEl=document.getElementById('label');
 const curEl=document.getElementById('cur'), totEl=document.getElementById('tot');
 const segsEl=document.getElementById('segs'), hint=document.getElementById('hint');
-const loader=document.getElementById('loader'), pct=document.getElementById('pct'), lf=document.getElementById('lf');
+const rail=document.getElementById('rail'), bar=document.getElementById('bar');
+const dock=document.getElementById('dock'), wire=document.getElementById('wire');
 
 const pad4=n=>String(n).padStart(4,'0');
 const folder=s=>(MOBILE && s.dirM) ? s.dirM : s.dir;
+const srcOf=(s,i)=>folder(s)+'/'+pad4(i)+'.'+EXT;
 
 totEl.textContent=pad4(TOTAL);
-track.style.height=Math.max(TOTAL*PX_PER_FRAME, innerHeight*3)+'px';
+track.style.height = STILL ? '100svh'
+  : Math.max(TOTAL*PX_PER_FRAME, innerHeight*3)+'px';
 
 let acc=0;
-SEGS.forEach(s=>{ s.start=acc; acc+=s.count; s.imgs=[]; s.loaded=false; });
+SEGS.forEach(s=>{ s.start=acc; acc+=s.count; s.imgs=new Array(s.count); s.stage=0; });
 SEGS.forEach(()=>{ const i=document.createElement('i'); segsEl.appendChild(i); });
 
-let target=0, current=0, raf=null, seg=-1, firstDone=false;
+let target=0, current=0, raf=null, seg=-1, shown=0;
 
 function sizeCanvas(){
   const box=cv.parentElement.getBoundingClientRect();
-  const dpr=Math.min(devicePixelRatio||1, MOBILE?2:2);
+  const dpr=Math.min(devicePixelRatio||1,2);
   cv.width=Math.round(box.width*dpr);
   cv.height=Math.round(box.height*dpr);
   render(current);
 }
 
-function loadSegment(s, isFirst){
-  if(s.loaded) return; s.loaded=true;
-  const dir=folder(s);
-  let done=0;
-  for(let i=1;i<=s.count;i++){
-    const im=new Image(); im.decoding='async';
-    const fin=()=>{ done++;
-      if(isFirst){
-        const p=Math.round(done/s.count*100);
-        pct.textContent=String(p).padStart(3,'0')+'%'; lf.style.width=p+'%';
-        if(done>=Math.min(10,s.count)) finish();
-      }
-    };
-    im.onload=fin; im.onerror=fin;
-    im.src=dir+'/'+pad4(i)+'.jpg';
-    s.imgs.push(im);
-  }
+function grab(s,i,onDone){
+  if(s.imgs[i-1]) return;
+  const im=new Image(); im.decoding='async';
+  im.onload=()=>{ shown++; onDone && onDone(); render(current); };
+  im.onerror=()=>{ shown++; onDone && onDone(); };
+  im.src=srcOf(s,i);
+  s.imgs[i-1]=im;
+}
+
+/* three waves: anchors first, then a coarse pass, then everything.
+   the sequence is watchable long before it is complete. */
+function loadSegment(s, lead){
+  if(s.stage) return; s.stage=1;
+  const n=s.count;
+  const anchors=[1,n,Math.round(n/2),Math.round(n/4),Math.round(n*3/4)];
+  let got=0;
+  const step=()=>{ got++; if(lead) bump(got, n); };
+  anchors.forEach(i=>grab(s,i,step));
+
+  const coarse=()=>{ for(let i=1;i<=n;i+=6) grab(s,i,step); };
+  const full  =()=>{ for(let i=1;i<=n;i++)  grab(s,i,step); s.stage=3; };
+
+  setTimeout(coarse, 120);
+  if('requestIdleCallback' in window) requestIdleCallback(full,{timeout:2600});
+  else setTimeout(full, 900);
+}
+
+function bump(got,n){
+  const p=Math.min(100,Math.round(got/n*100));
+  wire.style.width=p+'%';
+  if(p>=99) setTimeout(()=>wire.classList.add('gone'),400);
 }
 
 function locate(g){
   for(let i=0;i<SEGS.length;i++){
     const s=SEGS[i];
-    if(g < s.start + s.count) return {i, s, local: Math.max(0, Math.round(g - s.start))};
+    if(g < s.start+s.count) return {i,s,local:Math.max(0,Math.round(g-s.start))};
   }
   const s=SEGS[SEGS.length-1];
-  return {i:SEGS.length-1, s, local:s.count-1};
+  return {i:SEGS.length-1,s,local:s.count-1};
+}
+
+function nearest(s,i){
+  const a=s.imgs;
+  if(a[i] && a[i].complete && a[i].naturalWidth) return a[i];
+  for(let d=1;d<s.count;d++){
+    const l=a[i-d], r=a[i+d];
+    if(l && l.complete && l.naturalWidth) return l;
+    if(r && r.complete && r.naturalWidth) return r;
+  }
+  return null;
 }
 
 function cover(img){
@@ -215,21 +332,11 @@ function cover(img){
   ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
 }
 
-function placeholder(txt){
-  ctx.fillStyle='#0B0E11'; ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.fillStyle='#67788A'; ctx.textAlign='center';
-  const d=Math.min(cv.width,cv.height)/1000*2.4;
-  ctx.font=(13*d)+'px ui-monospace, monospace';
-  ctx.fillText(txt, cv.width/2, cv.height/2);
-}
-
 function render(g){
-  if(!TOTAL){ placeholder('no frames yet — set count in SEGMENTS'); return; }
+  if(!TOTAL) return;
   const {i,s,local}=locate(g);
-  const img=s.imgs[local];
-  if(img && img.complete && img.naturalWidth) cover(img);
-  else placeholder(folder(s)+'/'+pad4(local+1)+'.jpg');
-
+  const img=nearest(s,local);
+  if(img) cover(img);
   curEl.textContent=pad4(Math.min(TOTAL,Math.round(g)+1));
 
   if(i!==seg){
@@ -252,28 +359,34 @@ function tick(){
   raf = Math.abs(target-current)>0.001 ? requestAnimationFrame(tick) : null;
 }
 
+let lastY=0;
 function onScroll(){
+  const y=scrollY;
   const r=track.getBoundingClientRect();
   const span=r.height-innerHeight;
   const p=span<=0?0:Math.max(0,Math.min(1,-r.top/span));
   target=p*(TOTAL-1);
-  hint.style.opacity=p>0.02?'0':'1';
-  if(!raf) raf=requestAnimationFrame(tick);
-}
 
-function finish(){
-  if(firstDone) return; firstDone=true;
-  loader.classList.add('gone'); sizeCanvas(); onScroll();
+  hint.style.opacity=p>0.02?'0':'1';
+  rail.classList.toggle('hide', r.bottom < innerHeight*0.6);
+  bar.classList.toggle('away', y>lastY && y>140);
+  dock.classList.toggle('up', y>innerHeight*0.7);
+  lastY=y;
+
+  if(!raf) raf=requestAnimationFrame(tick);
 }
 
 addEventListener('scroll',onScroll,{passive:true});
 let rt=null;
 addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(sizeCanvas,120); });
 addEventListener('orientationchange',()=>setTimeout(sizeCanvas,300));
+
 sizeCanvas();
-if(SEGS.length){ loadSegment(SEGS[0], true); if(SEGS[1]) loadSegment(SEGS[1]); }
-else finish();
-setTimeout(finish,7000);
+if(SEGS.length){
+  loadSegment(SEGS[0], true);
+  if(SEGS[1] && !STILL) setTimeout(()=>loadSegment(SEGS[1]), 1800);
+}
+onScroll();
 </script>
 </body>
 </html>
