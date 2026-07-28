@@ -265,8 +265,22 @@ const STILL  = matchMedia('(prefers-reduced-motion:reduce)').matches;
    ============================================================== */
 /* החלון נמדד בפריימים, אז ככל שהסצנה צפופה יותר הוא חייב לגדול איתה,
    אחרת הוא מכסה פחות תנועה והגלילה מתחילה לקפוץ. */
-/* בדסקטופ החלון קטן יותר דווקא, כי כל פריים שם כבד יותר בזיכרון. */
-const WINDOW   = MOBILE ? 20 : 16;  // פריימים לשמור בכל צד של המיקום הנוכחי
+const WINDOW   = MOBILE ? 20 : 24;  // פריימים לשמור בכל צד של המיקום הנוכחי
+
+/* ── מגבלת מהירות ──────────────────────────────────────────
+   כמה פריימים מותר להתקדם בכל פריים אנימציה (יש 60 בשנייה).
+
+   בלי זה, גלילה מהירה מקפיצה את התמונה על עשרות פריימים בבת אחת
+   והעין רואה הבהוב במקום תנועה. עם זה, גלילה מהירה הופכת לסרטון
+   שמתנגן מהר — רציף, בלי דילוגים.
+
+   הגלילה עצמה לא נחסמת. הגולש שולט בעמוד; רק ההליכה בווילה
+   מתנגנת בקצב שהעין מסוגלת לעקוב אחריו.
+
+   2.0 בדסקטופ = עד 120 פריימים בשנייה = פי 4 ממהירות הסרטון המקורי.
+   במובייל הערך גבוה יותר כי שם התנועה כבר רציפה ממילא —
+   המגבלה נכנסת רק בהעפה חזקה. */
+const MAX_STEP = MOBILE ? 3.5 : 2.0;
 const SKELETON = 12;                // שומרים תמיד כל פריים שנים־עשר
 
 /* תמונת 1x1 שקופה — מחליפה פריים משוחרר ומבטלת הורדה באמצע */
@@ -285,9 +299,17 @@ const pad4=n=>String(n).padStart(4,'0');
 const folder=s=>(MOBILE && s.dirM) ? s.dirM : s.dir;
 const srcOf=(s,i)=>folder(s)+'/'+pad4(i)+'.'+EXT;
 
+/* גלגלת עכבר זזה בקפיצות של ~100px; אצבע בטלפון זזה ברצף.
+   באותו מרחק גלילה, נקישת גלגלת אחת מדלגת על ~15 פריימים והתנועה
+   נראית קופצנית — בעוד שבטלפון אותו קוד נראה כמו סרטון.
+   לכן בדסקטופ פורסים את הסצנה על פי־2.5 מרחק: כל נקישה מזיזה
+   פחות פריימים, והתנועה חוזרת להיות רציפה.
+   ⚠️ המובייל נשאר בדיוק כפי שהוא — שם זה כבר עובד. */
+const PPF = MOBILE ? PX_PER_FRAME : PX_PER_FRAME * 2.5;
+
 totEl.textContent=pad4(TOTAL);
 track.style.height = STILL ? '100svh'
-  : Math.max(TOTAL*PX_PER_FRAME, innerHeight*3)+'px';
+  : Math.max(TOTAL*PPF, innerHeight*3)+'px';
 
 let acc=0;
 SEGS.forEach(s=>{ s.start=acc; acc+=s.count; s.imgs=new Array(s.count); s.stage=0; });
@@ -457,7 +479,10 @@ function render(g){
 }
 
 function tick(){
-  current+=(target-current)*0.13;
+  let step=(target-current)*0.13;
+  if(step >  MAX_STEP) step =  MAX_STEP;   /* גולל מהר קדימה */
+  if(step < -MAX_STEP) step = -MAX_STEP;   /* גולל מהר אחורה */
+  current+=step;
   if(Math.abs(target-current)<0.02) current=target;
   render(current);
   raf = Math.abs(target-current)>0.001 ? requestAnimationFrame(tick) : null;
@@ -525,6 +550,7 @@ if(location.search.indexOf('debug')>-1){
 
     box.textContent =
       'fps      '+fps+'\n'+
+      'lag      '+Math.round(Math.abs(target-current))+' frames behind\n'+
       'min 3s   '+(worstNow===999?'-':worstNow)+'      <-- זה שקובע\n'+
       'min all  '+(worstAll===999?'-':worstAll)+'      (כולל הטעינה)\n'+
       'frame    '+Math.round(current+1)+' / '+TOTAL+'\n'+
