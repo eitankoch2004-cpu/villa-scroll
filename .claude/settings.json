@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write",
+      "WebSearch",
+      "WebFetch",
+      "TodoWrite",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(du:*)",
+      "Bash(file:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "PowerShell(Get-ChildItem:*)",
+      "PowerShell(Get-Content:*)",
+      "PowerShell(Test-Path:*)",
+      "PowerShell(Get-Item:*)",
+      "PowerShell(Measure-Object:*)",
+      "PowerShell(Get-NetIPAddress:*)",
+      "PowerShell(Get-Command:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)"
+    ]
+  }
+}

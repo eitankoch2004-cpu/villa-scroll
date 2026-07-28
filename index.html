@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B0E11">
-<title>Meridian — an island house, and the light in it</title>
-<meta name="description" content="A modern house on a rock above open water, and the lamps drawn for it.">
-<link rel="preload" as="image" href="frames-m/0001.webp" media="(max-width:760px)">
-<link rel="preload" as="image" href="frames/0001.webp" media="(min-width:761px)">
+<title>GLOWORA — בית על הצוק, והאור שבתוכו</title>
+<meta name="description" content="וילה מודרנית מעל הים, והמנורות שתוכננו בשבילה. מנורות דקורטיביות בעבודת יד.">
+<link rel="preload" as="image" href="frames-lobby-m/0120.webp" media="(max-width:760px)">
+<link rel="preload" as="image" href="frames-lobby/0120.webp" media="(min-width:761px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300..900&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#0B0E11; --slate:#161D24; --mist:#D4DCE2; --muted:#67788A;
   --amber:#C08A3E; --rail:#2A343E;
-  --display:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --display:'Heebo',system-ui,sans-serif; --label:'Heebo',system-ui,sans-serif;
+  --serif:'Frank Ruhl Libre',Georgia,serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--ink);color:var(--mist);font-family:var(--display);
@@ -28,9 +29,34 @@ img{display:block;max-width:100%}
   align-items:center;padding:calc(15px + env(safe-area-inset-top)) clamp(16px,4vw,44px) 15px;
   mix-blend-mode:difference;transition:transform .35s ease,opacity .35s ease}
 .bar.away{transform:translateY(-110%);opacity:0}
-.mark{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#fff}
-.bar a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+.mark{font-family:var(--serif);font-size:17px;font-weight:700;letter-spacing:.14em;color:#fff}
+.bar a{font-family:var(--label);font-size:10px;letter-spacing:.05em;
   color:#fff;text-decoration:none;opacity:.75;padding:8px 0}
+
+/* מסך הכניסה.
+   מחקר: 63% נוטשים במסך שער חוסם. לכן זה לא שער —
+   אפשר ללחוץ על הכפתור, ואפשר פשוט לגלול ולעבור. */
+.gate{position:relative;height:100svh;overflow:hidden;display:flex;
+  align-items:center;justify-content:center;text-align:center}
+.gate picture,.gate>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gate .veil{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 60%,rgba(6,9,12,.25) 0%,rgba(6,9,12,.82) 70%),
+             linear-gradient(180deg,rgba(6,9,12,.7) 0%,transparent 30%,rgba(11,14,17,.95) 100%)}
+.gate .in{position:relative;z-index:2;padding:0 clamp(22px,6vw,40px);max-width:740px}
+.gate .eye{font-family:var(--label);font-size:11px;letter-spacing:.18em;
+  color:var(--amber);margin-bottom:22px}
+.gate h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,6.4vw,64px);
+  line-height:1.32;margin-bottom:26px;text-shadow:0 4px 40px rgba(0,0,0,.7)}
+.gate p{color:var(--mist);opacity:.72;font-size:15px;line-height:1.8;
+  max-width:36ch;margin:0 auto 38px}
+.enter{display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  min-height:56px;padding:0 40px;background:none;cursor:pointer;
+  border:1px solid rgba(212,220,226,.42);border-radius:2px;color:var(--mist);
+  font-family:var(--label);font-size:14px;letter-spacing:.05em;
+  transition:background .3s,border-color .3s,color .3s}
+.enter:hover,.enter:focus-visible{background:var(--mist);border-color:var(--mist);color:var(--ink)}
+.enter .arw{transition:transform .3s}
+.enter:hover .arw{transform:translateX(-5px)}
 
 .track{position:relative}
 .stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink);
@@ -40,21 +66,21 @@ img{display:block;max-width:100%}
 .scrim{position:absolute;inset:0;pointer-events:none;
   box-shadow:inset 0 -150px 130px -70px rgba(6,9,12,.85), inset 0 110px 110px -80px rgba(6,9,12,.75)}
 
-.label{position:absolute;left:clamp(18px,4vw,54px);bottom:clamp(84px,13vh,126px);z-index:20;
+.label{position:absolute;inset-inline-start:clamp(18px,4vw,54px);bottom:clamp(84px,13vh,126px);z-index:20;
   max-width:min(70vw,620px);opacity:0;transform:translateY(14px);
   transition:opacity .55s ease,transform .55s ease}
 .label.on{opacity:1;transform:none}
-.label .eye{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+.label .eye{font-family:var(--label);font-size:10px;letter-spacing:.05em;
   color:var(--amber);margin-bottom:10px}
-.label h1{font-variation-settings:'wdth' 68,'wght' 800;font-size:clamp(40px,10vw,132px);line-height:.86;
-  text-transform:uppercase;text-shadow:0 4px 44px rgba(0,0,0,.6)}
+.label h1{font-weight:900;font-size:clamp(40px,10vw,124px);line-height:.95;
+  text-shadow:0 4px 44px rgba(0,0,0,.6)}
 .label p{margin-top:12px;max-width:32ch;font-size:14px;line-height:1.6;opacity:.84;
   text-shadow:0 2px 18px rgba(0,0,0,.85)}
 
 .rail{position:fixed;right:clamp(12px,2.4vw,34px);top:50%;transform:translateY(-50%);z-index:35;
   display:flex;flex-direction:column;align-items:flex-end;gap:11px;transition:opacity .4s}
 .rail.hide{opacity:0;pointer-events:none}
-.rail .num{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.rail .num{font-family:var(--label);font-size:10px;letter-spacing:.05em;color:var(--muted)}
 .rail .num b{color:var(--mist);font-weight:500}
 .segs{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
 .segs i{display:block;width:20px;height:2px;background:var(--rail);transition:.3s}
@@ -62,7 +88,7 @@ img{display:block;max-width:100%}
 .segs i.now{background:var(--amber);width:36px}
 
 .hint{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);
-  z-index:35;font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  z-index:35;font-family:var(--label);font-size:10px;letter-spacing:.05em;
   color:var(--muted);transition:opacity .4s}
 
 /* thin top-edge progress instead of a blocking splash */
@@ -72,10 +98,9 @@ img{display:block;max-width:100%}
 
 .sect{padding:clamp(72px,13vh,140px) clamp(20px,5vw,64px)}
 .sect-head{max-width:760px;margin:0 auto clamp(40px,7vh,72px);text-align:center}
-.sect-head .eye{font-family:var(--mono);font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+.sect-head .eye{font-family:var(--label);font-size:10px;letter-spacing:.05em;
   color:var(--amber);margin-bottom:16px}
-.sect-head h2{font-variation-settings:'wdth' 70,'wght' 800;font-size:clamp(34px,7vw,88px);line-height:.9;
-  text-transform:uppercase;margin-bottom:20px}
+.sect-head h2{font-weight:900;font-size:clamp(34px,7vw,80px);line-height:1;margin-bottom:20px}
 .sect-head p{color:var(--muted);font-size:15px;line-height:1.75;max-width:46ch;margin:0 auto}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -86,37 +111,36 @@ img{display:block;max-width:100%}
 .shot{position:relative;aspect-ratio:4/5;background:#11171D;overflow:hidden}
 .shot img{width:100%;height:100%;object-fit:cover}
 .shot .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding:16px}
+  font-family:var(--label);font-size:11px;color:var(--muted);text-align:center;padding:16px}
 .body{padding:20px 20px 24px;display:flex;flex-direction:column;gap:8px;flex:1}
-.body .rm{font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber)}
-.body h3{font-variation-settings:'wdth' 84,'wght' 700;font-size:23px;text-transform:uppercase;line-height:1}
+.body .rm{font-family:var(--label);font-size:10px;letter-spacing:.05em;color:var(--amber)}
+.body h3{font-family:var(--serif);font-weight:700;font-size:25px;line-height:1.15}
 .body .note{color:var(--muted);font-size:13px;line-height:1.6;flex:1}
-.body .price{font-family:var(--mono);font-size:16px;color:var(--mist);margin-top:6px}
+.body .price{font-family:var(--label);font-size:16px;color:var(--mist);margin-top:6px}
 .body .buy{margin-top:12px;text-align:center;background:var(--mist);color:var(--ink);text-decoration:none;
-  font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  font-family:var(--label);font-size:10px;letter-spacing:.05em;
   padding:14px;border-radius:2px;transition:background .2s;min-height:48px;
   display:flex;align-items:center;justify-content:center}
 .body .buy:hover{background:var(--amber)}
 
 .strip{border-top:1px solid var(--rail);border-bottom:1px solid var(--rail);
   padding:clamp(48px,8vh,88px) clamp(20px,5vw,64px);text-align:center}
-.strip p{font-variation-settings:'wdth' 78,'wght' 500;font-size:clamp(19px,3.2vw,32px);
-  line-height:1.35;max-width:24ch;margin:0 auto;color:var(--mist)}
+.strip p{font-family:var(--serif);font-weight:500;font-size:clamp(20px,3.2vw,34px);
+  line-height:1.5;max-width:24ch;margin:0 auto;color:var(--mist)}
 .strip span{color:var(--amber)}
 
 .outro{padding:clamp(72px,13vh,140px) 22px clamp(72px,13vh,140px);
   text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px}
-.outro h2{font-variation-settings:'wdth' 72,'wght' 700;font-size:clamp(28px,6vw,60px);
-  line-height:1;text-transform:uppercase}
+.outro h2{font-weight:900;font-size:clamp(28px,6vw,56px);line-height:1.1}
 .outro p{color:var(--muted);max-width:42ch;line-height:1.7;font-size:14px}
-.btn{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);
+.btn{font-family:var(--label);font-size:11px;letter-spacing:.05em;color:var(--ink);
   background:var(--mist);text-decoration:none;padding:16px 32px;border-radius:2px;transition:background .2s;
   min-height:48px;display:inline-flex;align-items:center}
 .btn:hover{background:var(--amber)}
 
 .foot{padding:34px 22px calc(34px + env(safe-area-inset-bottom));text-align:center;
-  border-top:1px solid var(--rail);font-family:var(--mono);font-size:10px;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  border-top:1px solid var(--rail);font-family:var(--label);font-size:10px;
+  letter-spacing:.05em;color:var(--muted)}
 
 /* one persistent CTA, thumb height, phones only */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:38;display:none;
@@ -126,7 +150,7 @@ img{display:block;max-width:100%}
 .dock.up{transform:none}
 .dock a{display:flex;align-items:center;justify-content:center;min-height:50px;
   background:var(--mist);color:var(--ink);text-decoration:none;border-radius:2px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+  font-family:var(--label);font-size:11px;letter-spacing:.05em}
 
 @media (max-width:760px){
   .frameBox{height:auto;aspect-ratio:4/5}
@@ -153,8 +177,8 @@ img{display:block;max-width:100%}
 <div class="wire" id="wire"></div>
 
 <header class="bar" id="bar">
-  <div class="mark">Meridian</div>
-  <a href="#lamps">The lamps →</a>
+  <div class="mark">GLOWORA</div>
+  <a href="#lamps">המנורות ←</a>
 </header>
 
 <div class="rail" id="rail">
@@ -162,7 +186,21 @@ img{display:block;max-width:100%}
   <div class="segs" id="segs"></div>
 </div>
 
-<div class="hint" id="hint">Scroll</div>
+<div class="hint" id="hint">גלול</div>
+
+<section class="gate" id="gate">
+  <picture>
+    <source media="(max-width:760px)" srcset="frames-lobby-m/0120.webp">
+    <img src="frames-lobby/0120.webp" alt="הכניסה לווילת גלואורה" fetchpriority="high">
+  </picture>
+  <div class="veil"></div>
+  <div class="in">
+    <div class="eye">סיור בווילת GLOWORA</div>
+    <h1>איך נראה בית<br>שנבנה סביב האור?</h1>
+    <p>שבע דקות בבית אחד על הצוק. בלי טפסים, בלי הרשמה — רק אתם והאור.</p>
+    <button class="enter" id="enter">לפתוח את הדלת <span class="arw">←</span></button>
+  </div>
+</section>
 
 <section class="track" id="track">
   <div class="stage">
@@ -175,71 +213,64 @@ img{display:block;max-width:100%}
 </section>
 
 <section class="strip">
-  <p>The house was built for the light. <span>Then we made the light.</span></p>
+  <p>הבית נבנה בשביל האור. <span>אחר כך יצרנו את האור.</span></p>
 </section>
 
 <section class="sect" id="lamps">
   <div class="sect-head">
-    <div class="eye">The collection</div>
-    <h2>Light,<br>room by room</h2>
-    <p>Three pieces, each drawn for one part of the house. Same materials, same restraint — stone, smoked glass, blackened brass.</p>
+    <div class="eye">הקולקציה</div>
+    <h2>אור,<br>חדר אחר חדר</h2>
+    <p>שלוש מנורות, כל אחת תוכננה לחלק אחר בבית. אותם חומרים, אותו איפוק — אבן, זכוכית מעושנת ופליז מושחר.</p>
   </div>
   <div class="grid" id="grid"></div>
 </section>
 
 <section class="outro">
-  <h2>See them in place</h2>
-  <p>Walk the rooms and switch the light. Every lamp, in every space, before you decide.</p>
-  <a class="btn" href="showroom.html">Enter the showroom</a>
+  <h2>לראות אותן במקומן</h2>
+  <p>היכנסו לחדרים והדליקו את האור. כל מנורה, בכל חלל, לפני שתחליטו.</p>
+  <a class="btn" href="showroom.html">כניסה לחדר התצוגה</a>
 </section>
 
-<footer class="foot">Meridian — an island house</footer>
+<footer class="foot">GLOWORA — בית על הצוק</footer>
 
-<nav class="dock" id="dock"><a href="showroom.html">See the lamps in the rooms</a></nav>
+<nav class="dock" id="dock"><a href="showroom.html">לראות את המנורות בחדרים</a></nav>
 
+<!-- כל התוכן (חדרים, מנורות, מחירים, פרטי קשר) יושב ב-data.js -->
+<script src="data.js"></script>
 <script>
-/* ==============================================================
-   EDIT ONLY THIS BLOCK
-
-   One entry per room. Frames are .webp, four digits, in their
-   own folder:   frames-lobby/0001.webp
-   dir   = desktop frames (1920 wide, 16:9)
-   dirM  = phone frames   (880 wide, 4:5 crop)
-   count = how many frames. 0 = not made yet, room is skipped.
-   ============================================================== */
-const SEGMENTS = [
-  { dir:'frames', dirM:'frames-m', count:121, label:'The approach', note:'Stone steps climb the flank. The sea stays behind you until the last turn.' },
-  { dir:'frames-lobby',   dirM:'frames-lobby-m',   count:0, label:'Lobby',       note:'Double height, board-formed concrete, a single skylight slot.' },
-  { dir:'frames-living',  dirM:'frames-living-m',  count:0, label:'Living room', note:'The glass wall makes the horizon the far wall.' },
-  { dir:'frames-kitchen', dirM:'frames-kitchen-m', count:0, label:'Kitchen',     note:'A monolithic travertine island under three amber pendants.' },
-  { dir:'frames-bedroom', dirM:'frames-bedroom-m', count:0, label:'Bedroom',     note:'The bed faces open water. Nothing else does.' }
-];
-
-const LAMPS = [
-  { id:'aurora', room:'Living room', name:'Aurora', price:'₪489',
-    note:'Hand-blown smoked glass on a blackened brass stem. Warm, low, and quiet above a table.' },
-  { id:'basalt', room:'Lobby',       name:'Basalt', price:'₪620',
-    note:'A turned stone body with a dimmable core. Heavy in the hand, soft on the wall.' },
-  { id:'linea',  room:'Bedroom',     name:'Linea',  price:'₪350',
-    note:'A slim linear profile in matte black aluminium. Reads as a line of light, not a fixture.' }
-];
-
-const PX_PER_FRAME = 9;   // scroll distance per frame. higher = slower walk
-const EXT = 'webp';
-/* ============================================================== */
-
 document.getElementById('grid').innerHTML = LAMPS.map(l =>
   '<article class="card"><div class="shot">' +
-    '<div class="ph">img/lamp-' + l.id + '.jpg</div>' +
+    '<div class="ph">תמונה בקרוב</div>' +
     '<img src="img/lamp-' + l.id + '.jpg" alt="' + l.name + '" loading="lazy" onerror="this.remove()">' +
   '</div><div class="body">' +
     '<div class="rm">' + l.room + '</div><h3>' + l.name + '</h3>' +
     '<p class="note">' + l.note + '</p><div class="price">' + l.price + '</div>' +
-    '<a class="buy" href="showroom.html">See it in the room</a>' +
+    '<a class="buy" href="showroom.html">לראות בחדר</a>' +
   '</div></article>').join('');
 
 const MOBILE = matchMedia('(max-width:760px)').matches;
 const STILL  = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ==============================================================
+   חלון זיכרון
+
+   הבעיה: פריים מובייל = 880x1102 = 3.7MB בזיכרון.
+          121 פריימים = 448MB. Safari באייפון מת ב-384MB.
+
+   הפתרון: לא מחזיקים את כל הפריימים. מחזיקים רק:
+     1. חלון נע סביב המקום שרואים עכשיו  (WINDOW לכל צד)
+     2. שלד דליל שתמיד טעון, כדי שתמיד יהיה מה לצייר
+
+   התוצאה: הזיכרון קבוע. לא משנה אם יש חדר אחד או שלוש וילות.
+   ============================================================== */
+/* החלון נמדד בפריימים, אז ככל שהסצנה צפופה יותר הוא חייב לגדול איתה,
+   אחרת הוא מכסה פחות תנועה והגלילה מתחילה לקפוץ. */
+/* בדסקטופ החלון קטן יותר דווקא, כי כל פריים שם כבד יותר בזיכרון. */
+const WINDOW   = MOBILE ? 20 : 16;  // פריימים לשמור בכל צד של המיקום הנוכחי
+const SKELETON = 12;                // שומרים תמיד כל פריים שנים־עשר
+
+/* תמונת 1x1 שקופה — מחליפה פריים משוחרר ומבטלת הורדה באמצע */
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 const SEGS   = SEGMENTS.filter(s => s.count > 0);
 const TOTAL  = SEGS.reduce((a,s) => a + s.count, 0);
 
@@ -272,31 +303,103 @@ function sizeCanvas(){
   render(current);
 }
 
+/* כשעשרות פריימים נטענים יחד, כל אחד מהם ביקש ציור מחדש של הקנבס.
+   זה היה עשרות ציורים מיותרים בפריים אחד. עכשיו כולם מתאחדים לציור אחד. */
+let pendingDraw=0;
+function scheduleDraw(){
+  if(pendingDraw) return;
+  pendingDraw=requestAnimationFrame(()=>{ pendingDraw=0; render(current); });
+}
+
+/* 🔴 הכלל החשוב במנוע הזה:
+   מציירים על הקנבס רק תמונה שהדפדפן כבר פענח.
+
+   ציור של תמונה שנטענה אבל לא פוענחה מכריח את הדפדפן לפענח אותה
+   באותו רגע, על החוט שמצייר את המסך — והמסך קופא.
+   decode() מבצע את הפענוח מראש וברקע. רק אחריו מסמנים __ready,
+   ורק תמונה עם __ready מגיעה לציור. */
 function grab(s,i,onDone){
   if(s.imgs[i-1]) return;
   const im=new Image(); im.decoding='async';
-  im.onload=()=>{ shown++; onDone && onDone(); render(current); };
+  const ready=()=>{ im.__ready=true; shown++; onDone && onDone(); scheduleDraw(); };
+  im.onload=()=>{
+    if(im.decode) im.decode().then(ready, ready);
+    else ready();
+  };
   im.onerror=()=>{ shown++; onDone && onDone(); };
   im.src=srcOf(s,i);
   s.imgs[i-1]=im;
 }
 
-/* three waves: anchors first, then a coarse pass, then everything.
-   the sequence is watchable long before it is complete. */
+/* פריים שהוא חלק מהשלד הקבוע — לא משחררים אותו לעולם */
+const isAnchor=(s,i)=> i===1 || i===s.count || (i % SKELETON)===1;
+
+/* משחרר פריים מהזיכרון. מנתק מאזינים כדי שלא ייקרא render על תמונה מתה,
+   ומחליף את המקור בתמונה ריקה כדי לבטל הורדה שעוד באוויר. */
+function release(s,i){
+  const im=s.imgs[i-1];
+  if(!im) return;
+  im.onload=null; im.onerror=null;
+  im.src=BLANK;
+  s.imgs[i-1]=null;
+}
+
+/* טוען את מה שצריך סביב המיקום הנוכחי, ומשחרר את כל השאר.
+   נקרא בכל פריים של גלילה, ולכן יוצא מיד אם המיקום לא זז. */
+let lastCenter=-1;
+function ensureWindow(activeIdx, local){
+  const key=activeIdx*1e6+local;
+  if(key===lastCenter) return;
+  lastCenter=key;
+
+  for(let k=0;k<SEGS.length;k++){
+    const s=SEGS[k];
+    if(!s.imgs || !s.stage) continue;
+
+    if(k!==activeIdx){
+      /* חדר שלא צופים בו — משאירים ממנו רק את השלד */
+      for(let i=1;i<=s.count;i++) if(!isAnchor(s,i)) release(s,i);
+      continue;
+    }
+
+    const c=local+1;
+    const lo=Math.max(1, c-WINDOW);
+    const hi=Math.min(s.count, c+WINDOW);
+
+    /* מבקשים מהמרכז החוצה — הפריים שרואים עכשיו נטען ראשון,
+       הרחוקים ממתינים. קודם היה משמאל לימין, כלומר הפריים הנוכחי
+       חיכה בתור אחרי עשרות פריימים שעוד לא צריך. */
+    for(let d=0; d<=WINDOW; d++){
+      const a=c-d, b=c+d;
+      if(a>=lo) grab(s,a);
+      if(d && b<=hi) grab(s,b);
+    }
+    for(let i=1;i<lo;i++)          if(!isAnchor(s,i)) release(s,i);
+    for(let i=hi+1;i<=s.count;i++) if(!isAnchor(s,i)) release(s,i);
+  }
+}
+
+/* טוען את השלד בשני גלים.
+   הסצנה צפופה, ולכן כל השלד יחד היה כבד מדי לטעינה הראשונה.
+   גל 1 — עוגן אחד מכל ארבעה. מספיק כדי שיהיה מה לראות מיד.
+   גל 2 — שאר השלד, כשהדפדפן פנוי.
+   שאר הפריימים מגיעים מהחלון הנע לפי מיקום הגלילה. */
 function loadSegment(s, lead){
   if(s.stage) return; s.stage=1;
   const n=s.count;
-  const anchors=[1,n,Math.round(n/2),Math.round(n/4),Math.round(n*3/4)];
+  const anchors=[];
+  for(let i=1;i<=n;i++) if(isAnchor(s,i)) anchors.push(i);
+
+  const first=anchors.filter((_,k)=> k%4===0);
   let got=0;
-  const step=()=>{ got++; if(lead) bump(got, n); };
-  anchors.forEach(i=>grab(s,i,step));
+  const step=()=>{ got++; if(lead) bump(got, first.length); };
+  first.forEach(i=>grab(s,i,step));
 
-  const coarse=()=>{ for(let i=1;i<=n;i+=6) grab(s,i,step); };
-  const full  =()=>{ for(let i=1;i<=n;i++)  grab(s,i,step); s.stage=3; };
+  const rest=()=>{ anchors.forEach(i=>grab(s,i)); };
+  if('requestIdleCallback' in window) requestIdleCallback(rest,{timeout:2500});
+  else setTimeout(rest,1200);
 
-  setTimeout(coarse, 120);
-  if('requestIdleCallback' in window) requestIdleCallback(full,{timeout:2600});
-  else setTimeout(full, 900);
+  lastCenter=-1;   /* מאלץ את החלון להיטען מחדש גם אם המיקום לא זז */
 }
 
 function bump(got,n){
@@ -316,11 +419,11 @@ function locate(g){
 
 function nearest(s,i){
   const a=s.imgs;
-  if(a[i] && a[i].complete && a[i].naturalWidth) return a[i];
+  if(a[i] && a[i].__ready) return a[i];
   for(let d=1;d<s.count;d++){
     const l=a[i-d], r=a[i+d];
-    if(l && l.complete && l.naturalWidth) return l;
-    if(r && r.complete && r.naturalWidth) return r;
+    if(l && l.__ready) return l;
+    if(r && r.__ready) return r;
   }
   return null;
 }
@@ -335,6 +438,7 @@ function cover(img){
 function render(g){
   if(!TOTAL) return;
   const {i,s,local}=locate(g);
+  ensureWindow(i, local);
   const img=nearest(s,local);
   if(img) cover(img);
   curEl.textContent=pad4(Math.min(TOTAL,Math.round(g)+1));
@@ -376,10 +480,62 @@ function onScroll(){
   if(!raf) raf=requestAnimationFrame(tick);
 }
 
+/* הכפתור מזרז את מה שגלילה עושה ממילא — הוא לא שער.
+   מכבד prefers-reduced-motion: קופץ במקום להחליק. */
+document.getElementById('enter').addEventListener('click',()=>{
+  track.scrollIntoView({behavior: STILL ? 'auto' : 'smooth', block:'start'});
+});
+
 addEventListener('scroll',onScroll,{passive:true});
 let rt=null;
 addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(sizeCanvas,120); });
 addEventListener('orientationchange',()=>setTimeout(sizeCanvas,300));
+
+/* ── מסך אבחון ─────────────────────────────────────────────
+   מופיע רק אם מוסיפים ?debug לכתובת. לא משפיע על גולשים.
+   קיים כדי שנמדוד במקום לנחש.                              */
+if(location.search.indexOf('debug')>-1){
+  const box=document.createElement('div');
+  box.style.cssText='position:fixed;top:8px;left:8px;z-index:99;background:rgba(0,0,0,.82);'+
+    'color:#7CFC9B;font:12px/1.5 monospace;padding:9px 12px;border-radius:3px;'+
+    'white-space:pre;pointer-events:none;direction:ltr;text-align:left';
+  document.body.appendChild(box);
+
+  const bytesPerFrame = MOBILE ? 880*1100*4 : 1600*900*4;
+  let ticks=0, last=performance.now(), fps=0;
+  let worstAll=999, worstNow=999, resetAt=performance.now();
+
+  (function loop(){
+    ticks++;
+    const now=performance.now();
+    if(now-last>=500){
+      fps=Math.round(ticks*1000/(now-last));
+      if(fps<worstAll) worstAll=fps;
+      if(fps<worstNow) worstNow=fps;
+      ticks=0; last=now;
+    }
+    /* "הגרוע ביותר" מתאפס כל 3 שניות, אחרת צניחה אחת בטעינה
+       נשארת על המסך לנצח ונראית כאילו הבעיה נמשכת. */
+    if(now-resetAt>=3000){ worstNow=999; resetAt=now; }
+
+    let live=0, ready=0;
+    for(const s of SEGS) if(s.imgs) for(const im of s.imgs){
+      if(im){ live++; if(im.__ready) ready++; }
+    }
+
+    box.textContent =
+      'fps      '+fps+'\n'+
+      'min 3s   '+(worstNow===999?'-':worstNow)+'      <-- זה שקובע\n'+
+      'min all  '+(worstAll===999?'-':worstAll)+'      (כולל הטעינה)\n'+
+      'frame    '+Math.round(current+1)+' / '+TOTAL+'\n'+
+      'in RAM   '+live+'  (decoded '+ready+')\n'+
+      'memory   '+Math.round(live*bytesPerFrame/1048576)+' MB\n'+
+      'canvas   '+cv.width+' x '+cv.height+'\n'+
+      'dpr      '+(devicePixelRatio||1)+'\n'+
+      'mobile   '+MOBILE;
+    requestAnimationFrame(loop);
+  })();
+}
 
 sizeCanvas();
 if(SEGS.length){

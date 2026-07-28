@@ -1,0 +1,10 @@
+# קבצי JPG כפולים — הקוד מגיש רק .webp (הקבוע EXT ב-index.html).
+# הקבצים נשארים על המחשב כגיבוי, אבל לא עולים ל-GitHub (~13MB חיסכון).
+frames/*.jpg
+frames-m/*.jpg
+frames-*/*.jpg
+
+# קבצי מערכת של Windows ו-macOS
+Thumbs.db
+desktop.ini
+.DS_Store

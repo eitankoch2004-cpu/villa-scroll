@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E11">
+<title>חדר התצוגה — GLOWORA</title>
+<meta name="description" content="שלוש מנורות, כל אחת תוכננה לחדר אחר בבית. חומרים, מידות ומחירים.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300..900&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0E11; --slate:#161D24; --mist:#D4DCE2; --muted:#67788A;
+  --amber:#C08A3E; --rail:#2A343E;
+  --display:'Heebo',system-ui,sans-serif; --label:'Heebo',system-ui,sans-serif;
+  --serif:'Frank Ruhl Libre',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--mist);font-family:var(--display);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%}
+button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+img{display:block;max-width:100%}
+
+.bar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+  align-items:center;padding:calc(15px + env(safe-area-inset-top)) clamp(16px,4vw,44px) 15px;
+  mix-blend-mode:difference}
+.mark{font-family:var(--serif);font-size:17px;font-weight:700;letter-spacing:.14em;color:#fff}
+.bar a{font-family:var(--label);font-size:11px;letter-spacing:.05em;color:#fff;
+  text-decoration:none;opacity:.8;padding:8px 0}
+
+/* ראש הדף — פריים אחרון של הווילה כרקע */
+.hero{position:relative;height:58svh;min-height:340px;overflow:hidden;
+  display:flex;align-items:flex-end}
+.hero picture,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .veil{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(6,9,12,.55) 0%,rgba(6,9,12,.25) 40%,rgba(11,14,17,1) 100%)}
+.hero .in{position:relative;z-index:2;padding:0 clamp(20px,5vw,64px) clamp(34px,6vh,64px);max-width:760px}
+.eye{font-family:var(--label);font-size:11px;letter-spacing:.05em;color:var(--amber);margin-bottom:12px}
+.hero h1{font-weight:900;font-size:clamp(38px,9vw,86px);line-height:1;margin-bottom:14px}
+.hero p{color:var(--mist);opacity:.86;font-size:15px;line-height:1.7;max-width:44ch}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+
+/* מנורה אחת = שורה. בדסקטופ התמונה מתחלפת צד לסירוגין */
+.lamp{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);
+  align-items:center;padding:clamp(52px,9vh,104px) 0;border-bottom:1px solid var(--rail)}
+.lamp:nth-child(even) .shot{order:2}
+.shot{position:relative;aspect-ratio:4/5;background:#11171D;border:1px solid var(--rail);
+  border-radius:3px;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot .ph{position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;
+  align-items:center;justify-content:center;font-family:var(--label);font-size:12px;
+  color:var(--muted);text-align:center;padding:20px}
+.shot .ph b{color:var(--amber);font-size:26px;font-weight:300}
+
+.info .rm{font-family:var(--label);font-size:11px;letter-spacing:.05em;color:var(--amber);margin-bottom:12px}
+.info h2{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vw,50px);
+  line-height:1.15;margin-bottom:14px}
+.info .note{color:var(--muted);font-size:15px;line-height:1.75;max-width:42ch;margin-bottom:20px}
+.info .spec{font-family:var(--label);font-size:12px;letter-spacing:.05em;color:var(--mist);
+  opacity:.7;padding:14px 0;border-top:1px solid var(--rail);border-bottom:1px solid var(--rail);
+  margin-bottom:22px}
+.info .price{font-size:30px;font-weight:700;color:var(--mist);margin-bottom:22px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:52px;
+  background:var(--mist);color:var(--ink);text-decoration:none;border-radius:2px;
+  font-family:var(--label);font-size:13px;letter-spacing:.05em;padding:0 34px;
+  transition:background .2s}
+.cta:hover{background:var(--amber)}
+
+/* למה אין כפתור "הוסף לעגלה" — מסביר את שיטת המכירה */
+.how{padding:clamp(64px,11vh,120px) 0;text-align:center}
+.how h2{font-weight:900;font-size:clamp(28px,5vw,52px);line-height:1.1;margin-bottom:18px}
+.how>p{color:var(--muted);font-size:15px;line-height:1.75;max-width:48ch;margin:0 auto clamp(38px,6vh,60px)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:clamp(18px,3vw,32px);text-align:right}
+.step{background:var(--slate);border:1px solid var(--rail);border-radius:3px;padding:26px 24px}
+.step .n{font-family:var(--label);font-size:12px;color:var(--amber);margin-bottom:12px}
+.step h3{font-family:var(--serif);font-weight:700;font-size:20px;margin-bottom:10px}
+.step p{color:var(--muted);font-size:14px;line-height:1.7}
+
+.talk{border-top:1px solid var(--rail);padding:clamp(64px,11vh,120px) 0;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:20px}
+.talk h2{font-weight:900;font-size:clamp(26px,5vw,48px);line-height:1.1}
+.talk p{color:var(--muted);font-size:15px;line-height:1.7;max-width:40ch}
+.ways{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+.ghost{border:1px solid var(--rail);background:none;color:var(--mist)}
+.ghost:hover{background:var(--slate);border-color:var(--muted)}
+
+.foot{padding:34px 22px calc(34px + env(safe-area-inset-bottom));text-align:center;
+  border-top:1px solid var(--rail);font-family:var(--label);font-size:11px;
+  letter-spacing:.05em;color:var(--muted)}
+
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:38;display:none;
+  padding:10px clamp(14px,4vw,20px) calc(10px + env(safe-area-inset-bottom));
+  background:rgba(11,14,17,.9);backdrop-filter:blur(14px);border-top:1px solid var(--rail)}
+.dock a{display:flex;align-items:center;justify-content:center;min-height:50px;
+  background:var(--mist);color:var(--ink);text-decoration:none;border-radius:2px;
+  font-family:var(--label);font-size:13px;letter-spacing:.05em}
+
+@media (max-width:860px){
+  .lamp{grid-template-columns:1fr;gap:26px;padding:clamp(44px,7vh,72px) 0}
+  .lamp:nth-child(even) .shot{order:0}
+  .info .note{max-width:none}
+  .steps{text-align:right}
+  .dock{display:block}
+  .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .cta{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="mark">GLOWORA</div>
+  <a href="index.html">← חזרה לווילה</a>
+</header>
+
+<section class="hero">
+  <picture>
+    <source media="(max-width:760px)" srcset="frames-lobby-m/0120.webp">
+    <img src="frames-lobby/0120.webp" alt="הכניסה לווילה בשעת דמדומים" fetchpriority="high">
+  </picture>
+  <div class="veil"></div>
+  <div class="in">
+    <div class="eye">חדר התצוגה</div>
+    <h1>שלוש מנורות</h1>
+    <p>כל אחת תוכננה לחדר אחר בבית. אותם חומרים, אותו איפוק — אבן, זכוכית מעושנת ופליז מושחר.</p>
+  </div>
+</section>
+
+<main class="wrap" id="lamps"></main>
+
+<section class="wrap how">
+  <h2>איך קונים</h2>
+  <p>אין כאן עגלת קניות. כל מנורה נשלחת אחרי שיחה איתי — כדי לוודא שהיא הנכונה לחלל שלכם, ושאתם יודעים בדיוק מה מגיע ומתי.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="n">01</div>
+      <h3>כותבים לי</h3>
+      <p>בוואטסאפ או במייל. מספרים על החדר — גודל, גובה תקרה, איזה אור יש בו היום.</p>
+    </div>
+    <div class="step">
+      <div class="n">02</div>
+      <h3>מתאימים</h3>
+      <p>אני ממליץ על הדגם והמידה. אם שום דבר לא מתאים — אני אומר את זה.</p>
+    </div>
+    <div class="step">
+      <div class="n">03</div>
+      <h3>מזמינים</h3>
+      <p>מקבלים מחיר סופי, זמן אספקה מדויק, ופרטי תשלום. בלי הפתעות.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap talk">
+  <h2>נדבר על החלל שלכם</h2>
+  <p>שאלה על מידה, גובה תלייה או גוון אור? אני עונה בעצמי.</p>
+  <div class="ways" id="ways"></div>
+</section>
+
+<footer class="foot">GLOWORA — בית על הצוק</footer>
+
+<nav class="dock"><a href="#" id="dockCta">לדבר איתי על מנורה</a></nav>
+
+<script src="data.js"></script>
+<script>
+/* בונה את הדף מתוך LAMPS ו-CONTACT שב-data.js.
+   לשנות מחיר או שם? רק שם. הדף הזה יתעדכן לבד. */
+
+const waLink = (text) =>
+  'https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(text);
+
+document.getElementById('lamps').innerHTML = LAMPS.map(l => `
+  <article class="lamp">
+    <div class="shot">
+      <div class="ph"><b>${l.name}</b>תמונה בקרוב</div>
+      <img src="img/lamp-${l.id}.jpg" alt="מנורת ${l.name}" loading="lazy" onerror="this.remove()">
+    </div>
+    <div class="info">
+      <div class="rm">${l.room}</div>
+      <h2>${l.name}</h2>
+      <p class="note">${l.note}</p>
+      <div class="spec">${l.spec}</div>
+      <div class="price">${l.price}</div>
+      <a class="cta" href="${waLink('היי, מעניינת אותי מנורת ' + l.name + '. אפשר פרטים?')}"
+         target="_blank" rel="noopener">לפרטים ולהזמנה</a>
+    </div>
+  </article>`).join('');
+
+document.getElementById('ways').innerHTML =
+  `<a class="cta" href="${waLink('היי, יש לי שאלה על המנורות.')}" target="_blank" rel="noopener">וואטסאפ</a>` +
+  `<a class="cta ghost" href="mailto:${CONTACT.email}">מייל</a>` +
+  `<a class="cta ghost" href="https://instagram.com/${CONTACT.instagram}" target="_blank" rel="noopener">אינסטגרם</a>`;
+
+document.getElementById('dockCta').href = waLink('היי, יש לי שאלה על המנורות.');
+</script>
+</body>
+</html>
