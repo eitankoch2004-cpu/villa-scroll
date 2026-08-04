@@ -4,6 +4,11 @@ frames/*.jpg
 frames-m/*.jpg
 frames-*/*.jpg
 
+# סרטוני מקור — כבדים, ומשמשים רק לייצור פריימים.
+# הפריימים עצמם כן עולים; הסרטון לא נחוץ באתר.
+*.mp4
+*.mov
+
 # קבצי מערכת של Windows ו-macOS
 Thumbs.db
 desktop.ini

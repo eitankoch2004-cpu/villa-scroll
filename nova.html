@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05060B">
+<title>נובה — מקרן גלקסיה לחדר | GLOWORA</title>
+<meta name="description" content="מקרן הגלקסיה נובה מבית GLOWORA. 16 מצבי תאורה, רמקול Bluetooth, שלט וטיימר. משלוח חינם, החזרה 90 יום. ₪149.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200..900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/nova-5.jpg">
+<style>
+:root{
+  --bg:#05060B; --panel:#0C0E17; --edge:#1B1F2E;
+  --text:#F2F4FA; --dim:#8A90A8;
+  --v:#7A5CFF; --c:#33D6FF; --gold:#FFC24B;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Heebo',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%;padding-bottom:80px}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--c);outline-offset:4px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+
+/* ── שכבת עומק ── */
+.aura{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+   radial-gradient(70vw 70vw at 82% -14%, rgba(122,92,255,.24), transparent 60%),
+   radial-gradient(58vw 58vw at 8% 4%, rgba(51,214,255,.15), transparent 58%)}
+.stars{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:
+   radial-gradient(1.4px 1.4px at 12% 22%, #fff, transparent),
+   radial-gradient(1.2px 1.2px at 68% 14%, #fff, transparent),
+   radial-gradient(1.6px 1.6px at 34% 62%, #fff, transparent),
+   radial-gradient(1.1px 1.1px at 84% 48%, #fff, transparent),
+   radial-gradient(1.3px 1.3px at 52% 82%, #fff, transparent),
+   radial-gradient(1px 1px at 22% 88%, #fff, transparent),
+   radial-gradient(1.5px 1.5px at 92% 74%, #fff, transparent);
+  background-size:100% 100%}
+
+/* ── חשיפה בגלילה ── */
+.rise{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+.rise.in{opacity:1;transform:none}
+.rise.d1{transition-delay:.09s}.rise.d2{transition-delay:.18s}.rise.d3{transition-delay:.27s}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
+
+/* ── ראש ── */
+.bar{position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;
+  padding:15px clamp(20px,5vw,48px);
+  background:rgba(5,6,11,.72);backdrop-filter:blur(18px);border-bottom:1px solid transparent;
+  transition:border-color .3s}
+.bar.stuck{border-bottom-color:var(--edge)}
+.logo{font-size:19px;font-weight:900;letter-spacing:.34em}
+.logo b{color:var(--c)}
+.bar .mini{font-size:12px;color:var(--dim)}
+
+/* ── גיבור ── */
+.hero{min-height:88svh;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);
+  align-items:center;padding:clamp(20px,4vh,50px) 0}
+/* התמונה מוקטנת ומרוכזת — היא לא צריכה למלא את כל הצד */
+.shot{position:relative;max-width:400px;margin-inline:auto}
+.shot .halo{position:absolute;inset:-10% -10% 22%;border-radius:50%;
+  background:radial-gradient(circle,rgba(122,92,255,.30),transparent 66%);filter:blur(48px)}
+.shot .main{position:relative;width:100%;aspect-ratio:1;border-radius:20px;overflow:hidden;
+  border:1px solid var(--edge);background:var(--panel);
+  animation:float 7s ease-in-out infinite}
+.shot .main img{width:100%;height:100%;object-fit:cover}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@media (prefers-reduced-motion:reduce){.shot .main{animation:none}}
+
+/* שורת תמונות קטנות מתחת — דפדוף בלי לגלול */
+.picks{position:relative;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:9px;margin-top:12px}
+.picks button{aspect-ratio:1;padding:0;cursor:pointer;overflow:hidden;
+  background:var(--panel);border:1px solid var(--edge);border-radius:10px;
+  transition:border-color .2s,transform .2s}
+.picks button:hover{transform:translateY(-2px)}
+.picks button.on{border-color:var(--c)}
+.picks img{width:100%;height:100%;object-fit:cover}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;
+  color:var(--c);border:1px solid var(--edge);border-radius:99px;padding:7px 15px;margin-bottom:20px}
+h1{font-size:clamp(40px,7.6vw,86px);font-weight:900;line-height:.98;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--c),var(--v));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);font-size:clamp(16px,1.9vw,19px);line-height:1.7;max-width:40ch;margin-bottom:26px}
+.rate{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:24px}
+.rate b{color:var(--gold);font-size:16px;letter-spacing:.06em}
+.rate span{color:var(--dim)}
+.pr{display:flex;align-items:baseline;gap:12px;margin-bottom:7px}
+.pr .n{font-size:clamp(38px,5vw,52px);font-weight:900;letter-spacing:-.02em}
+.pr .o{font-size:19px;color:var(--dim);text-decoration:line-through}
+.pr .d{background:var(--gold);color:#000;font-size:12px;font-weight:800;padding:5px 10px;border-radius:6px}
+.fine{color:var(--dim);font-size:13px;margin-bottom:22px}
+
+/* בחירת צבע — שתי בועות, אותו מחיר */
+.swatch{margin-bottom:24px}
+.swatch .lbl{font-size:13px;color:var(--dim);margin-bottom:11px}
+.swatch .lbl b{color:var(--text);font-weight:700}
+.swatch .opts{display:flex;gap:12px}
+.swatch button{width:46px;height:46px;border-radius:50%;cursor:pointer;padding:0;
+  border:2px solid var(--edge);position:relative;transition:transform .18s,border-color .2s}
+.swatch button:hover{transform:scale(1.07)}
+.swatch button.on{border-color:var(--c)}
+.swatch button.on::after{content:'';position:absolute;inset:-7px;border-radius:50%;
+  border:1px solid rgba(51,214,255,.42)}
+.sw-black{background:linear-gradient(145deg,#2A2A33,#0A0A0F)}
+.sw-white{background:linear-gradient(145deg,#FFFFFF,#D3D6E0)}
+
+.buy{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:60px;padding:0 34px;border:0;border-radius:14px;cursor:pointer;
+  background:linear-gradient(100deg,var(--v),var(--c));color:#05060B;
+  font-family:inherit;font-size:17px;font-weight:800;
+  box-shadow:0 10px 40px rgba(122,92,255,.36);
+  transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .25s}
+.buy:hover{transform:translateY(-3px);box-shadow:0 18px 52px rgba(122,92,255,.5)}
+.msgprev{margin-top:13px;font-size:12.5px;color:var(--dim);line-height:1.6}
+.msgprev span{color:var(--text);opacity:.85}
+.msgprev button{margin-inline-start:8px;background:none;border:1px solid var(--edge);
+  color:var(--c);border-radius:7px;padding:4px 11px;font-family:inherit;font-size:12px;
+  font-weight:700;cursor:pointer;transition:border-color .2s}
+.msgprev button:hover{border-color:var(--c)}
+
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,16px);z-index:80;
+  background:var(--panel);border:1px solid var(--c);color:var(--text);
+  padding:13px 22px;border-radius:12px;font-size:14px;font-weight:700;
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.badges{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;font-size:13px;color:var(--dim)}
+.badges span::before{content:'✓';color:var(--c);font-weight:800;margin-left:7px}
+
+/* ── יכולות המוצר — רשת פשוטה, בלי תמונות ובלי דביקות ── */
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.feat{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:28px 26px}
+.feat .num{font-size:11.5px;letter-spacing:.16em;color:var(--c);margin-bottom:13px}
+.feat h3{font-size:21px;font-weight:800;line-height:1.2;margin-bottom:10px}
+.feat p{color:var(--dim);font-size:15px;line-height:1.75}
+
+/* ── כללי ── */
+section{padding:clamp(52px,9vh,110px) 0}
+.line{border-top:1px solid var(--edge)}
+h2{font-size:clamp(30px,5.2vw,58px);font-weight:900;line-height:1.06;letter-spacing:-.02em;margin-bottom:16px}
+.lead{color:var(--dim);font-size:17px;line-height:1.8;max-width:48ch;margin-bottom:40px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--edge);border:1px solid var(--edge);border-radius:16px;overflow:hidden}
+.stat{background:var(--bg);padding:28px 22px;text-align:center}
+.stat b{display:block;font-size:clamp(30px,4vw,44px);font-weight:900;line-height:1;
+  background:linear-gradient(100deg,var(--c),var(--v));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;color:var(--dim);font-size:13px;margin-top:9px}
+
+/* ── תשלום ── */
+.pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:26px}
+.paystep{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:26px 24px}
+.paystep .pn{font-size:12px;letter-spacing:.2em;color:var(--c);margin-bottom:12px}
+.paystep h3{font-size:19px;font-weight:800;margin-bottom:9px}
+.paystep p{color:var(--dim);font-size:14px;line-height:1.7}
+.paystep b{color:var(--text)}
+
+.bitcard{background:linear-gradient(140deg,rgba(122,92,255,.13),rgba(51,214,255,.07));
+  border:1px solid var(--edge);border-radius:16px;padding:24px}
+.bitrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.bl{font-size:12px;color:var(--dim);margin-bottom:6px}
+.bnum{font-size:clamp(24px,3.6vw,32px);font-weight:900;letter-spacing:.04em;direction:ltr;text-align:right}
+.copy{background:var(--panel);border:1px solid var(--edge);color:var(--text);
+  border-radius:10px;padding:13px 22px;font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:border-color .2s,background .2s}
+.copy:hover{border-color:var(--c)}
+.copy.done{border-color:var(--c);color:var(--c)}
+.qrbox{display:flex;align-items:center;gap:18px;margin-top:20px;padding-top:20px;
+  border-top:1px solid var(--edge)}
+.qrbox img{width:118px;height:118px;border-radius:12px;background:#fff;
+  object-fit:contain;padding:7px;flex:none}
+.qrtxt b{display:block;font-size:16px;font-weight:800;margin-bottom:5px}
+.qrtxt span{color:var(--dim);font-size:13px;line-height:1.7}
+.qrtxt em{font-style:normal;color:var(--c);font-weight:800}
+.bnote{color:var(--dim);font-size:13px;line-height:1.7;margin-top:16px}
+
+table{width:100%;border-collapse:collapse;font-size:16px}
+td{padding:17px 0;border-bottom:1px solid var(--edge)}
+td:first-child{color:var(--dim);width:44%}
+td:last-child{font-weight:600}
+
+details{border-bottom:1px solid var(--edge)}
+summary{padding:21px 0;cursor:pointer;font-weight:700;font-size:17px;list-style:none;
+  display:flex;justify-content:space-between;gap:16px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';color:var(--c);font-size:25px;font-weight:200;flex:none}
+details[open] summary::after{content:'−'}
+details p{color:var(--dim);font-size:16px;line-height:1.8;padding-bottom:21px;max-width:58ch}
+
+.close{text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px}
+
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:14px;align-items:center;
+  padding:10px clamp(14px,4vw,20px) calc(10px + env(safe-area-inset-bottom));
+  background:rgba(5,6,11,.94);backdrop-filter:blur(18px);border-top:1px solid var(--edge);
+  transform:translateY(110%);transition:transform .4s cubic-bezier(.2,.8,.3,1)}
+.dock.up{transform:none}
+.dock .p b{display:block;font-size:22px;font-weight:900;line-height:1.1}
+.dock .p span{font-size:11px;color:var(--dim)}
+.dock .buy{flex:1;min-height:52px;font-size:15px;padding:0}
+.foot{padding:34px 20px;text-align:center;font-size:12px;color:var(--dim);border-top:1px solid var(--edge)}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;min-height:auto;gap:26px;text-align:right}
+  .hero .shot{order:-1}
+
+
+
+  .buy{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="aura"></div><div class="stars"></div>
+
+<header class="bar" id="bar">
+  <div class="logo">GLOW<b>O</b>RA</div>
+  <div class="mini">משלוח חינם לכל הארץ</div>
+</header>
+
+<main class="wrap">
+
+  <!-- ── גיבור ── -->
+  <section class="hero">
+    <div>
+      <div class="kicker rise">★ נובה · 5,000+ נמכרו</div>
+      <h1 class="rise d1">התקרה שלך,<br><em>בתור שמי לילה</em></h1>
+      <p class="sub rise d2">לוחצים על השלט — והחדר הופך לערפילית. ענן צבע שנע לאט, ומעליו מאות כוכבים.</p>
+      <div class="rate rise d2"><b>★★★★★ 4.9</b><span>551 ביקורות מאומתות</span></div>
+      <div class="pr rise d3"><span class="n">₪149</span><span class="o">₪229</span><span class="d">35%-</span></div>
+      <p class="fine rise d3">המחיר סופי. בלי מע"מ נוסף, בלי דמי מכס.</p>
+
+      <div class="swatch rise d3">
+        <div class="lbl">צבע: <b id="colName">שחור</b> · אותו מחיר</div>
+        <div class="opts">
+          <button type="button" class="sw-black on" data-col="שחור" data-img="img/nova-5.jpg" aria-label="שחור"></button>
+          <button type="button" class="sw-white" data-col="לבן" data-img="img/nova-2.jpg" aria-label="לבן"></button>
+        </div>
+      </div>
+
+      <a class="buy rise d3" href="#" data-buy>הזמנה באינסטגרם ←</a>
+      <div class="badges rise d3"><span>משלוח חינם</span><span>החזרה 90 יום</span><span>אחריות שנה</span></div>
+    </div>
+    <div class="shot rise">
+      <div class="halo"></div>
+      <div class="main"><img id="heroImg" src="img/nova-5.jpg" alt="מקרן הגלקסיה נובה בשחור" fetchpriority="high"></div>
+      <div class="picks" id="picks"></div>
+    </div>
+  </section>
+
+  <!-- ── מספרים ── -->
+  <div class="line"></div>
+  <section>
+    <div class="stats rise">
+      <div class="stat"><b>16</b><span>מצבי תאורה</span></div>
+      <div class="stat"><b>360°</b><span>סיבוב ראש</span></div>
+      <div class="stat"><b>25</b><span>מ״ר כיסוי</span></div>
+      <div class="stat"><b>4.9</b><span>דירוג ממוצע</span></div>
+    </div>
+  </section>
+
+  <!-- ── מקטע דביק ── -->
+  <div class="line"></div>
+  <section>
+    <h2 class="rise">מה זה עושה</h2>
+    <p class="lead rise d1">חמישה דברים שהופכים חדר רגיל למשהו אחר.</p>
+    <div class="feats">
+      <div class="feat rise">
+        <div class="num">01 · הערפילית</div>
+        <h3>ענן שנע על התקרה</h3>
+        <p>שמונה גוונים, כל אחד זז בקצב אחר. לא תמונה קפואה — משהו שממשיך לזוז כל הלילה.</p>
+      </div>
+      <div class="feat rise d1">
+        <div class="num">02 · הכוכבים</div>
+        <h3>מאות נקודות אור</h3>
+        <p>לייזר 532nm שמפזר כוכבים ירוקים על כל החדר. לשלב עם הערפילית או להפעיל לבד.</p>
+      </div>
+      <div class="feat rise d2">
+        <div class="num">03 · הצבע</div>
+        <h3>אתם בוחרים אווירה</h3>
+        <p>סגול לרוגע, אדום לגיימינג, כחול לשינה. השלט מחליף בלחיצה, בלי לקום מהמיטה.</p>
+      </div>
+      <div class="feat rise">
+        <div class="num">04 · הזווית</div>
+        <h3>ראש מגנטי 360°</h3>
+        <p>דוחפים את הראש לאן שרוצים והוא נשאר שם. תקרה, קיר, או פינה אחת בחדר.</p>
+      </div>
+      <div class="feat rise d1">
+        <div class="num">05 · הגרסאות</div>
+        <h3>לבן או שחור</h3>
+        <p>אותו מוצר בדיוק. הלבן נעלם בחדר ילדים, השחור יושב טוב בחדר גיימינג.</p>
+      </div>
+      <div class="feat rise d2">
+        <div class="num">06 · השקט</div>
+        <h3>טיימר ונרדמים</h3>
+        <p>שעה או שעתיים ונכבה לבד. שמים, נרדמים, ולא קמים באמצע הלילה לכבות.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── התקנה ── -->
+  <div class="line"></div>
+  <section>
+    <h2 class="rise">שלושים שניות<br>ואתה בפנים</h2>
+    <p class="lead rise d1">בלי חשמלאי, בלי קידוח, בלי אפליקציה. מחברים USB, מכוונים, לוחצים.</p>
+  </section>
+
+  <!-- ── מפרט ── -->
+  <div class="line"></div>
+  <section>
+    <h2 class="rise">מפרט מלא</h2>
+    <table class="rise d1">
+      <tr><td>מצבי תאורה</td><td>16 — 8 ערפילית · 5 כוכבים · 3 נשימה</td></tr>
+      <tr><td>שליטה</td><td>שלט רחוק + כפתור על הגוף</td></tr>
+      <tr><td>רמקול</td><td>Bluetooth מובנה · סנכרון למוזיקה</td></tr>
+      <tr><td>טיימר</td><td>שעה או שעתיים · כיבוי אוטומטי</td></tr>
+      <tr><td>סיבוב ראש</td><td>360° על בסיס מגנטי</td></tr>
+      <tr><td>חשמל</td><td>USB · 5V · צריכה נמוכה</td></tr>
+      <tr><td>שטח כיסוי</td><td>עד 25 מ״ר</td></tr>
+      <tr><td>מידות</td><td>110 × 87 × 83 מ״מ</td></tr>
+      <tr><td>בקופסה</td><td>מקרן · שלט · כבל USB · הוראות</td></tr>
+    </table>
+  </section>
+
+  <!-- ── תשלום ── -->
+  <div class="line"></div>
+  <section>
+    <h2 class="rise">איך משלמים</h2>
+    <p class="lead rise d1">שלושה צעדים. בלי הרשמה, בלי להשאיר פרטי אשראי באתר.</p>
+    <div class="pay rise d1">
+      <div class="paystep">
+        <div class="pn">01</div>
+        <h3>כותבים לנו</h3>
+        <p>לוחצים על כפתור ההזמנה — נפתחת שיחה בהודעות אינסטגרם. ההודעה כבר מועתקת — רק להדביק ולשלוח.</p>
+      </div>
+      <div class="paystep">
+        <div class="pn">02</div>
+        <h3>מאשרים זמינות</h3>
+        <p>אנחנו מוודאים מלאי וזמן אספקה, ושולחים בקשת תשלום ב-<b>ביט</b>, או סורקים את הקוד למטה.</p>
+      </div>
+      <div class="paystep">
+        <div class="pn">03</div>
+        <h3>משלמים בביט</h3>
+        <p>מאשרים באפליקציה — וזהו. ההזמנה יוצאת לדרך ומקבלים עדכון מעקב.</p>
+      </div>
+    </div>
+
+    <div class="bitcard rise d2">
+      <div class="bitrow">
+        <div>
+          <div class="bl">תשלום בביט למספר</div>
+          <div class="bnum" id="bitNum">054-819-1216</div>
+        </div>
+        <button class="copy" type="button" id="copyBit">העתקה</button>
+      </div>
+      <div class="qrbox" id="qrbox" hidden>
+        <img id="qrImg" src="img/bit-qr.jpg" alt="קוד QR לתשלום בביט">
+        <div class="qrtxt">
+          <b>או לסרוק את הקוד</b>
+          <span>פותחים ביט ← סריקה ← מקלידים <em>149 ₪</em> ← אישור</span>
+        </div>
+      </div>
+      <p class="bnote">אפשר גם להעביר ישירות מהאפליקציה. אחרי התשלום — שלחו צילום מסך בהודעות ונאשר מיד.</p>
+    </div>
+  </section>
+
+  <!-- ── שאלות ── -->
+  <div class="line"></div>
+  <section>
+    <h2 class="rise">שאלות שנשאלות</h2>
+    <div class="rise d1">
+      <details open><summary>כמה זמן לוקח המשלוח?</summary>
+        <p>10 עד 18 ימי עסקים. אנחנו מזמינים ישירות מהיצרן וזה מה שמאפשר את המחיר. צריכים לתאריך מסוים? כתבו לנו לפני ההזמנה ונוודא שזה מסתדר.</p></details>
+      <details><summary>יש תשלום נוסף במכס?</summary>
+        <p>לא. ערך החבילה נמוך מסף המע"מ בישראל — לא תקבלו חיוב נוסף. המחיר באתר הוא הסופי.</p></details>
+      <details><summary>בטוח לחדר של ילד?</summary>
+        <p>כן. פועל ב-5V דרך USB, לא מתחמם, ואין בו חלקים חמים או שבירים. הטיימר נועד בדיוק לזה.</p></details>
+      <details><summary>ואם זה לא מוצא חן בעיניי?</summary>
+        <p>החזרה תוך 90 יום. כותבים לנו באינסטגרם ואנחנו מטפלים. הגיע פגום? שולחים חדש על חשבוננו.</p></details>
+      <details><summary>איך מזמינים?</summary>
+        <p>לוחצים על כפתור ההזמנה — נפתחת שיחה באינסטגרם. אומרים צבע וכמות, מקבלים אישור זמינות ופרטי תשלום. עונה אדם, לא בוט.</p></details>
+    </div>
+  </section>
+
+  <!-- ── סגירה ── -->
+  <div class="line"></div>
+  <section class="close">
+    <h2 class="rise">שווה לנסות</h2>
+    <p class="lead rise d1" style="margin:0">551 אנשים דירגו 4.9. ואם זה לא בשבילכם — 90 יום להחזיר, בלי שאלות.</p>
+    <a class="buy rise d2" href="#" data-buy>הזמנה באינסטגרם ←</a>
+    <div class="badges rise d2" style="justify-content:center">
+      <span>משלוח חינם</span><span>החזרה 90 יום</span><span>ללא מע״מ נוסף</span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">GLOWORA · תאורה שמשנה חדר</footer>
+
+<nav class="dock" id="dock">
+  <div class="p"><b>₪149</b><span>משלוח חינם</span></div>
+  <a class="buy" href="#" data-buy>הזמנה</a>
+</nav>
+
+<script>
+const INSTAGRAM = 'glowora__shop.il';
+const BIT_PHONE = '0548191216';
+
+/* שורת התמונות הקטנות בגיבור */
+const heroImg = document.getElementById('heroImg');
+const picks = document.getElementById('picks');
+
+/* הסדר בגלריה. השחור ראשון — זו התמונה שנפתחת עם האתר. */
+const ORDER = [5,2,3];
+
+ORDER.forEach((n,k)=>{
+  const src = 'img/nova-'+n+'.jpg';
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.setAttribute('aria-label','תמונה '+(k+1));
+  b.innerHTML = '<img src="'+src+'" alt="" loading="lazy">';
+  b.onclick = ()=>{
+    heroImg.src = src;
+    picks.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  };
+  if(k===0) b.classList.add('on');
+  picks.appendChild(b);
+});
+
+/* חשיפה בגלילה — IntersectionObserver, בלי ספריות */
+const io = new IntersectionObserver((es)=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.14, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+
+/* סרגל עליון + סרגל קנייה תחתון */
+const bar = document.getElementById('bar');
+const dock = document.getElementById('dock');
+addEventListener('scroll',()=>{
+  bar.classList.toggle('stuck', scrollY > 12);
+  dock.classList.toggle('up', scrollY > innerHeight * .75);
+},{passive:true});
+
+/* בחירת צבע — מחליפה תמונה, תווית, ואת ההודעה שמועתקת ללוח */
+let color = 'שחור';
+const colName = document.getElementById('colName');
+
+/* ig.me הוא הקישור הרשמי שפותח שיחה ישירה בהודעות אינסטגרם.
+   אינסטגרם לא מאפשרת להזין טקסט מראש, אז הצבע מוצג על הכפתור
+   ומועתק ללוח כדי שהלקוח רק ידביק. */
+function orderText(){
+  return 'היי 🙂 אשמח להזמין את מנורת האסטרונאוט בצבע ' + color + '. אפשר פרטים?';
+}
+
+/* העתקה ללוח.
+   navigator.clipboard עובד רק ב-HTTPS. בכתובת מקומית או בדפדפן ישן
+   הוא פשוט לא קיים — ואז נופלים לשיטה הישנה עם textarea מוסתר,
+   שעובדת בכל מקום. */
+function copyText(t){
+  if(navigator.clipboard && isSecureContext){
+    return navigator.clipboard.writeText(t).then(()=>true).catch(()=>legacyCopy(t));
+  }
+  return Promise.resolve(legacyCopy(t));
+}
+function legacyCopy(t){
+  try{
+    const ta = document.createElement('textarea');
+    ta.value = t;
+    ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0, t.length);
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){ return false; }
+}
+
+/* הודעה צפה קצרה */
+function toast(msg){
+  let t = document.getElementById('toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* פשוט פותח את הצ'אט. ההודעה עצמה מחכה שם כ"שאלת פתיחה"
+   שמוגדרת בהגדרות החשבון העסקי באינסטגרם — הלקוח רק מקיש עליה. */
+function refreshBuy(){
+  const href = 'https://ig.me/m/' + INSTAGRAM;
+  document.querySelectorAll('[data-buy]').forEach(a=>{
+    a.href = href; a.target = '_blank'; a.rel = 'noopener';
+    a.onclick = null;
+  });
+}
+
+document.querySelectorAll('.swatch button').forEach(b=>{
+  b.onclick = ()=>{
+    color = b.dataset.col;
+    colName.textContent = color;
+    heroImg.src = b.dataset.img;
+    document.querySelectorAll('.swatch button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    /* מסמן גם בגלריה למטה, אם התמונה נמצאת שם */
+    picks.querySelectorAll('button').forEach(x=>{
+      x.classList.toggle('on', x.querySelector('img').getAttribute('src') === b.dataset.img);
+    });
+    refreshBuy();
+  };
+});
+
+refreshBuy();
+
+/* קוד ה-QR של ביט מוצג רק אם הקובץ קיים — אחרת המקטע פשוט לא מופיע */
+(function(){
+  const box = document.getElementById('qrbox');
+  const probe = new Image();
+  probe.onload = ()=>{ box.hidden = false; };
+  probe.src = 'img/bit-qr.jpg';
+})();
+
+/* העתקת מספר הביט בלחיצה */
+const copyBtn = document.getElementById('copyBit');
+if(copyBtn){
+  copyBtn.onclick = async ()=>{
+    try{
+      await navigator.clipboard.writeText('0548191216');
+      copyBtn.textContent = 'הועתק ✓';
+      copyBtn.classList.add('done');
+      setTimeout(()=>{ copyBtn.textContent='העתקה'; copyBtn.classList.remove('done'); },2200);
+    }catch(e){
+      const r = document.createRange();
+      r.selectNode(document.getElementById('bitNum'));
+      getSelection().removeAllRanges();
+      getSelection().addRange(r);
+    }
+  };
+}
+</script>
+</body>
+</html>

@@ -17,7 +17,9 @@ param(
     [Parameter(Mandatory=$true)][string]$Name,
     [int]$Count = 0,          # 0 = לגזור מהסרטון: כל פריים שקיים בו, בלי לזרוק תנועה
     [int]$Quality = 66,
-    [ValidateSet('none','dusk','night')][string]$Grade = 'none'
+    [ValidateSet('none','dusk','night')][string]$Grade = 'none',
+    [double]$Start = 0,       # שנייה שממנה מתחילים לחתוך
+    [double]$Length = 0       # כמה שניות לקחת. 0 = עד הסוף
 )
 
 # --- דירוגי צבע -------------------------------------------------------------
@@ -71,9 +73,15 @@ if ($duration -le 0) {
     exit 1
 }
 
-# כמה פריימים באמת יש בסרטון. זו התקרה — מעליה רק משכפלים תמונות.
-$native = [int](& $ffprobe -v error -select_streams v:0 -count_packets `
-                -show_entries stream=nb_read_packets -of csv=p=0 $Video)
+# קצב הפריימים של המקור, כדי לחשב כמה פריימים יש בקטע שנבחר
+$rate = & $ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 $Video
+$srcFps = [double]($rate.Split('/')[0]) / [double]($rate.Split('/')[1])
+
+# אם ביקשו קטע — האורך הרלוונטי הוא אורך הקטע, לא אורך הסרטון
+if ($Length -gt 0) {
+    $duration = [math]::Min($Length, $duration - $Start)
+}
+$native = [int][math]::Floor($duration * $srcFps)
 
 if ($Count -le 0) {
     $Count = $native
@@ -124,10 +132,14 @@ foreach ($j in $jobs) {
     if ($GRADES[$Grade]) { $vf = $vf + ',' + $GRADES[$Grade] }
 
     Write-Host "   מייצר $($j.Label) ..." -NoNewline
-    & $ffmpeg -hide_banner -loglevel error -y -i $Video `
-        -vf $vf -frames:v $Count `
-        -c:v libwebp -quality $Quality -compression_level 6 `
-        (Join-Path $out '%04d.webp')
+    $args = @('-hide_banner','-loglevel','error','-y')
+    if ($Start -gt 0) { $args += @('-ss', $Start) }
+    $args += @('-i', $Video)
+    if ($Length -gt 0) { $args += @('-t', $Length) }
+    $args += @('-vf', $vf, '-frames:v', $Count,
+               '-c:v','libwebp','-quality',$Quality,'-compression_level','6',
+               (Join-Path $out '%04d.webp'))
+    & $ffmpeg @args
 
     $made = @(Get-ChildItem "$out\*.webp" -ErrorAction SilentlyContinue)
     $mb   = [math]::Round((($made | Measure-Object Length -Sum).Sum / 1MB), 2)

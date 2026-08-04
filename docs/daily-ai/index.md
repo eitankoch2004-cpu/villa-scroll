@@ -21,6 +21,8 @@
 
 | 2026-08-03 | ידני, מ-VS Code | OpenAI Astra — עשר בעיות מתמטיות פתוחות עם הוכחות Lean · Anthropic — Agentic Misalignment Summer 2026 · Anthropic — AI Organizations, צוות סוכנים פחות מיושר | borrow, return, heavy, light, early, tired, together, maybe, almost, change | 2. slash command |
 
+| 2026-08-04 | **GitHub Actions** ✅ | חוק ה-AI האירופי סעיף 50 — סימון תוכן AI · Google DeepMind — Gemini Robotics 2 · סיכום: התבנית של השבועיים | already, decide, forget, listen, next, other, place, ready, sure, until | 3. CLAUDE.md |
+
 **לא נשלחו כלל:** 30.7, 31.7, 1.8 — הרוטינה בענן ירתה ולא הפיקה פלט.
 
 ## למה הרוטינה בענן לא עובדת — נסגר 2.8.2026
