@@ -19,6 +19,12 @@ if [[ -z "${TELEGRAM_TOKEN:-}" ]]; then
   exit 1
 fi
 
+# ⚠️ הדבקה של טוקן לתוך שדה ב-GitHub גוררת כמעט תמיד תו שורה או רווח בקצה.
+# התו הזה נכנס לתוך ה-URL ושובר אותו, ו-curl נופל על כל הודעה עם
+# "curl: (3) URL rejected: Malformed input to a URL function".
+# נצרב ב-4 באוגוסט 2026. הניקוי כאן זול, ומייתר תלות בדיוק של ההדבקה.
+TELEGRAM_TOKEN="$(printf '%s' "$TELEGRAM_TOKEN" | tr -d '[:space:]')"
+
 API="https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"
 
 # שולח קובץ טקסט אחד כהודעה. הטקסט עובר דרך קובץ ולא בשורת הפקודה —
@@ -32,9 +38,11 @@ send_file() {
   if [[ "$resp" == *'"ok":true'* ]]; then
     return 0
   fi
-  # לא מדפיסים את $resp — טלגרם מחזיר את ה-URL המלא בשגיאות מסוימות,
-  # וה-URL מכיל את הטוקן.
-  echo "::error::שליחה נכשלה עבור ${path}"
+  # מדפיסים רק את שדה description מהתשובה. את $resp המלא אסור להדפיס —
+  # טלגרם מחזיר בו את ה-URL המלא בחלק מהשגיאות, וה-URL מכיל את הטוקן.
+  local desc
+  desc="$(printf '%s' "$resp" | grep -o '"description":"[^"]*"' | head -1)"
+  echo "::error::שליחה נכשלה עבור ${path} ${desc:-(אין תשובה מטלגרם — כנראה curl נפל לפני שהגיע)}"
   return 1
 }
 
@@ -54,8 +62,9 @@ FILE="${QUEUE_DIR}/${TODAY}.md"
 
 # כמה מנות עתידיות נשארו בתור. שמות הקבצים הם YYYY-MM-DD.md, ולכן
 # השוואת מחרוזות פשוטה מספיקה — אין צורך לפרסר תאריכים.
+# התבנית מסננת את README.md, שאחרת נספר כמנה ("R" גדול מ-"2").
 count_future() {
-  find "$QUEUE_DIR" -name '*.md' 2>/dev/null \
+  find "$QUEUE_DIR" -name '????-??-??.md' 2>/dev/null \
     | awk -v t="${TODAY}.md" -F/ '$NF > t' \
     | wc -l | tr -d ' '
 }
