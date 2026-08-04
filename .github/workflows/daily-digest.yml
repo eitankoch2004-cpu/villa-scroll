@@ -1,0 +1,34 @@
+# שולח את המנה היומית לטלגרם.
+#
+# למה זה קיים כאן ולא ברוטינת הענן של Claude:
+# סביבת הענן עוברת דרך proxy עם רשימת דומיינים מותרים, ו-api.telegram.org
+# לא ברשימה. כל ניסיון משם מוחזר עם "CONNECT tunnel failed, response 403".
+# ל-GitHub Actions אין ההגבלה הזו.
+#
+# התוכן עצמו נכתב מראש לתוך docs/daily-ai/queue/ — קובץ אחד ליום.
+# ה-workflow הזה רק בוחר את הקובץ של היום ושולח אותו.
+
+name: המנה היומית לטלגרם
+
+on:
+  schedule:
+    # 09:00 UTC = 12:00 בישראל בשעון קיץ.
+    # ⚠️ מ-25 באוקטובר 2026 (סוף שעון קיץ) צריך לשנות ל-'0 10 * * *'.
+    - cron: '0 9 * * *'
+  # מאפשר להריץ ידנית מלשונית Actions — שימושי לבדיקה.
+  workflow_dispatch:
+
+# הרשאות מינימליות: קריאת הקוד בלבד. ה-workflow לא כותב כלום.
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: שולח את המנה
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: bash tools/send-digest.sh

@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# סקריפטים שרצים על לינוקס (GitHub Actions) חייבים סופי שורה בסגנון יוניקס.
+# עם CRLF שנוצר על Windows, bash נכשל עם "bad interpreter: /bin/bash^M".
+*.sh text eol=lf
+*.yml text eol=lf
+
